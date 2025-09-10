@@ -165,6 +165,11 @@ class UnoApp {
       console.log('Player reconnected:', data);
       this.handlePlayerReconnected(data);
     });
+
+    this.socketClient.on('player-ready', (data) => {
+      console.log('Player ready status changed:', data);
+      this.handlePlayerReady(data);
+    });
   }
 
   /**
@@ -222,7 +227,10 @@ class UnoApp {
   handleRoomCreated(data) {
     this.gameState.setRoomInfo(data.roomId);
     this.gameState.setPlayerInfo(data.room.host.id, data.room.host.socketId, data.room.host.name, true);
-    this.gameState.updateFromServer({ players: data.room.players });
+    this.gameState.updateFromServer({ 
+      players: data.room.players,
+      maxPlayers: data.room.maxPlayers
+    });
     
     this.gameUI.showPage('lobby');
     this.gameUI.showSuccess('Room created successfully!');
@@ -242,7 +250,10 @@ class UnoApp {
   handleRoomJoined(data) {
     this.gameState.setRoomInfo(data.room.id);
     this.gameState.setPlayerInfo(data.player.id, data.player.socketId, data.player.name, false);
-    this.gameState.updateFromServer({ players: data.room.players });
+    this.gameState.updateFromServer({ 
+      players: data.room.players,
+      maxPlayers: data.room.maxPlayers
+    });
     
     this.gameUI.showPage('lobby');
     this.gameUI.showSuccess('Joined room successfully!');
@@ -481,6 +492,39 @@ class UnoApp {
     
     // Play sound
     Utils.playSound('player-reconnect');
+  }
+
+  /**
+   * Handle player ready status change
+   * @param {Object} data - Player ready data
+   */
+  handlePlayerReady(data) {
+    console.log('Player ready event received:', data);
+    
+    // Update room info if provided
+    if (data.room) {
+      this.gameState.updateFromServer({ players: data.room.players });
+    }
+    
+    this.gameUI.updatePlayersList();
+    this.gameUI.updateRoomInfo();
+    
+    // Find the player who changed ready status
+    const player = this.gameState.players.find(p => p.socketId === data.playerId);
+    console.log('Found player:', player, 'Current player ID:', this.gameState.playerId);
+    
+    if (player) {
+      this.gameUI.showInfo(`${player.name} is ${data.ready ? 'ready' : 'not ready'}`);
+      
+      // If this is the current player, update their ready button
+      if (player.id === this.gameState.playerId) {
+        console.log('Updating ready button for current player:', data.ready);
+        this.gameUI.updateReadyButton(data.ready);
+      }
+    }
+    
+    // Play sound
+    Utils.playSound('player-ready');
   }
 
   /**

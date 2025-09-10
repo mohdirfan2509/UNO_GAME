@@ -1,259 +1,90 @@
-# UNO Multiplayer Web Application
+# UNO Multiplayer Game
 
-A complete UNO multiplayer web application that supports 2-4 players over LAN (same WiFi connection). Built with modern glassmorphism UI, robust real-time backend, and complete UNO game logic.
-
-## 🎮 Features
-
-- **Real-time Multiplayer**: Play with 2-4 players over local network
-- **Modern UI**: Beautiful glassmorphism design with smooth animations
-- **Mobile Responsive**: Touch-friendly interface for phones and tablets
-- **Complete UNO Rules**: All standard UNO cards and rules implemented
-- **Room System**: Create or join rooms with unique 6-character codes
-- **Reconnection Support**: Automatic reconnection handling
-- **Sound Effects**: Audio feedback for game actions
-- **QR Code Sharing**: Easy room sharing via QR codes
+A real-time multiplayer UNO card game built with Node.js, Socket.IO, and vanilla JavaScript.
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### Option 1: Using the startup script (Recommended)
+1. Double-click `start-server.bat` in the project root
+2. Open your browser and go to `http://localhost:3000`
 
-- Node.js (v14 or higher)
-- Modern web browser
-- Local network connection
-
-### Installation
-
-1. **Clone the repository**
+### Option 2: Manual startup
+1. Open terminal/command prompt
+2. Navigate to the server directory:
    ```bash
-   git clone <repository-url>
-   cd uno-multiplayer
+   cd D:\End_sem_2\uno-multiplayer\server
    ```
-
-2. **Install dependencies**
+3. Start the server:
    ```bash
-   cd server
-   npm install
+   node app.js
    ```
+4. Open your browser and go to `http://localhost:3000`
 
-3. **Start the server**
-   ```bash
-   npm start
-   ```
+## 🎮 How to Play
 
-4. **Access the game**
-   - Open your browser and navigate to the displayed LAN URL
-   - Example: `http://192.168.1.100:3000`
+1. **Create a Room**: Click "Create Room" and enter your name
+2. **Share Room ID**: Share the 6-character room ID with friends
+3. **Join Room**: Friends can join using "Join Room" and entering the room ID
+4. **Start Game**: Host can start the game when 2-4 players are ready
+5. **Play UNO**: Follow standard UNO rules - match color or number, use special cards, call UNO when you have 1 card left!
 
-## 🎯 How to Play
+## 🌐 Network Play
 
-### Creating a Room
+The server displays LAN IP addresses when it starts. Friends on the same network can join using:
+- `http://[LAN-IP]:3000` (e.g., `http://192.168.1.100:3000`)
 
-1. Click "Create Room" on the landing page
-2. Enter your name and select maximum players (2-4)
-3. Click "Create Room" to generate a room code
-4. Share the room code or QR code with other players
+## 🛠️ Features
 
-### Joining a Room
+- ✅ Real-time multiplayer gameplay
+- ✅ Room-based system with unique IDs
+- ✅ Responsive design for mobile and desktop
+- ✅ Modern glassmorphism UI
+- ✅ Sound effects and animations
+- ✅ Automatic reconnection handling
+- ✅ Game state persistence
 
-1. Click "Join Room" on the landing page
-2. Enter the 6-character room code
-3. Enter your name
-4. Click "Join Room"
+## 📁 Project Structure
 
-### Playing the Game
-
-1. **Starting**: Host clicks "Start Game" when all players are ready
-2. **Playing Cards**: Click on playable cards in your hand
-3. **Wild Cards**: Choose a color when playing wild cards
-4. **Drawing**: Click "Draw Card" if you can't play
-5. **UNO**: Click "UNO!" when you have one card left
-6. **Winning**: First player to empty their hand wins!
-
-## 🎨 Game Rules
-
-### Standard UNO Rules
-
-- **Number Cards (0-9)**: Play on matching color or number
-- **Skip**: Skip the next player's turn
-- **Reverse**: Reverse the direction of play
-- **Draw 2**: Next player draws 2 cards and skips turn
-- **Wild**: Choose any color
-- **Wild Draw 4**: Choose any color, next player draws 4 cards
-
-### Special Rules
-
-- **UNO Call**: Must call "UNO!" when down to 1 card
-- **UNO Penalty**: Draw 2 cards if you don't call UNO
-- **Wild Draw 4 Challenge**: Can challenge if you think player has playable cards
-- **Empty Deck**: Discard pile is reshuffled when draw pile is empty
-
-## 🛠️ Technology Stack
-
-### Frontend
-- **HTML5**: Semantic markup
-- **CSS3**: Modern styling with glassmorphism effects
-- **Bootstrap 5**: Responsive framework
-- **Vanilla JavaScript**: No frameworks, pure JS
-- **Socket.IO Client**: Real-time communication
-
-### Backend
-- **Node.js**: Server runtime
-- **Express.js**: Web framework
-- **Socket.IO**: Real-time WebSocket communication
-- **In-memory Storage**: No database required
-
-## 📱 Mobile Support
-
-The application is fully responsive and optimized for mobile devices:
-
-- **Touch Controls**: Tap to play cards, swipe gestures
-- **Responsive Design**: Adapts to all screen sizes
-- **Mobile UI**: Optimized button sizes and layouts
-- **Performance**: Smooth 60fps animations on mobile
-
-## 🔧 Configuration
-
-### Server Configuration
-
-Edit `server/app.js` to modify:
-
-```javascript
-const port = process.env.PORT || 3000; // Server port
-const cors = { origin: "*" }; // CORS settings
+```
+uno-multiplayer/
+├── server/                 # Backend server
+│   ├── app.js             # Main server file
+│   ├── game/              # Game logic
+│   ├── socket/            # Socket.IO handlers
+│   └── utils/             # Utilities
+├── public/                # Frontend files
+│   ├── index.html         # Main HTML file
+│   ├── css/               # Stylesheets
+│   └── js/                # JavaScript files
+├── start-server.bat       # Windows startup script
+└── README.md              # This file
 ```
 
-### Game Configuration
+## 🔧 Troubleshooting
 
-Edit `server/utils/constants.js` to modify:
+### Port 3000 already in use
+If you get "EADDRINUSE" error:
+1. Close any other servers running on port 3000
+2. Or change the port in `server/app.js` (line 22)
 
-```javascript
-const GAME_CONFIG = {
-  MIN_PLAYERS: 2,
-  MAX_PLAYERS: 4,
-  CARDS_PER_PLAYER: 7,
-  // ... other settings
-};
-```
+### Cannot connect to server
+1. Make sure the server is running
+2. Check firewall settings
+3. Try `http://localhost:3000` instead of `http://127.0.0.1:3000`
 
-## 🎵 Audio & Effects
+### Game not loading
+1. Check browser console for errors (F12)
+2. Make sure all CSS and JS files are loading
+3. Try refreshing the page
 
-The game includes sound effects and haptic feedback:
+## 🎯 Game Rules
 
-- **Card Play**: Sound when playing cards
-- **UNO Call**: Special sound for UNO calls
-- **Game Events**: Audio for game state changes
-- **Vibration**: Haptic feedback on mobile devices
+- Each player starts with 7 cards
+- Match the color or number of the top card
+- Special cards: Skip, Reverse, Draw 2, Wild, Wild Draw 4
+- Call "UNO!" when you have 1 card left
+- First player to empty their hand wins!
 
-## 🔒 Security Features
+## 🚀 Ready to Play!
 
-- **Input Validation**: All inputs are sanitized
-- **Room Isolation**: Players can only access their room
-- **Connection Limits**: Prevents connection flooding
-- **Error Handling**: Graceful error recovery
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-1. **Cannot connect to server**
-   - Check if server is running
-   - Verify LAN connection
-   - Try different port if 3000 is occupied
-
-2. **Room not found**
-   - Verify room code is correct (6 characters)
-   - Check if room still exists
-   - Try creating a new room
-
-3. **Game not starting**
-   - Ensure at least 2 players are in room
-   - Check if host clicked "Start Game"
-   - Verify all players are ready
-
-4. **Mobile issues**
-   - Enable JavaScript in browser
-   - Check network connection
-   - Try refreshing the page
-
-### Debug Mode
-
-Enable debug logging by setting:
-
-```javascript
-process.env.LOG_LEVEL = 'debug';
-```
-
-## 🚀 Deployment
-
-### Local Network Deployment
-
-1. **Start server** on host machine
-2. **Note the LAN IP** displayed in console
-3. **Share the URL** with other players
-4. **Players join** using the LAN URL
-
-### Production Deployment
-
-For production deployment:
-
-1. **Set environment variables**
-   ```bash
-   export NODE_ENV=production
-   export PORT=3000
-   ```
-
-2. **Use process manager**
-   ```bash
-   npm install -g pm2
-   pm2 start server/app.js --name "uno-multiplayer"
-   ```
-
-3. **Configure reverse proxy** (nginx/Apache)
-4. **Enable HTTPS** for secure connections
-
-## 📊 Performance
-
-### Benchmarks
-
-- **Server**: Handles 10+ concurrent rooms (40+ players)
-- **Client**: 60fps animations on mobile devices
-- **Network**: <100ms action response time on LAN
-- **Memory**: Efficient state management, no memory leaks
-
-### Optimization
-
-- **Code Splitting**: Modular JavaScript architecture
-- **Image Optimization**: Compressed assets
-- **Caching**: Browser caching for static assets
-- **Compression**: Gzip compression for responses
-
-## 🤝 Contributing
-
-1. **Fork the repository**
-2. **Create feature branch** (`git checkout -b feature/amazing-feature`)
-3. **Commit changes** (`git commit -m 'Add amazing feature'`)
-4. **Push to branch** (`git push origin feature/amazing-feature`)
-5. **Open Pull Request**
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **UNO**: Mattel for the classic card game
-- **Bootstrap**: For the responsive framework
-- **Socket.IO**: For real-time communication
-- **Font Awesome**: For the beautiful icons
-
-## 📞 Support
-
-For support and questions:
-
-- **Issues**: Open an issue on GitHub
-- **Discussions**: Use GitHub Discussions
-- **Email**: Contact the development team
-
----
-
-**Enjoy playing UNO with your friends! 🎉**
+Your UNO Multiplayer game is now ready! Just run the startup script and start playing with friends.

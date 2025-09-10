@@ -68,11 +68,11 @@
                                 </p>
                                 
                                 <div class="action-buttons">
-                                    <button type="submit" class="btn btn-primary glass-button">
+                                    <button type="button" class="btn btn-primary glass-button" id="createRoomBtn">
                                         <i class="fas fa-plus me-2"></i>
                                         Create Room
                                     </button>
-                                    <button type="submit" class="btn btn-primary glass-button">
+                                    <button type="button" class="btn btn-primary glass-button" id="joinRoomBtn">
                                         <i class="fas fa-sign-in-alt me-2"></i>
                                         Join Room
                                     </button>
@@ -187,6 +187,10 @@
                                     </div>
                                     
                                     <div class="lobby-actions">
+                                        <button id="readyBtn" class="btn btn-warning glass-button">
+                                            <i class="fas fa-check me-2"></i>
+                                            Ready
+                                        </button>
                                         <button id="startGameBtn" class="btn btn-success glass-button" disabled>
                                             <i class="fas fa-play me-2"></i>
                                             Start Game
@@ -217,6 +221,10 @@
                                         <div class="detail-item">
                                             <span class="label">Players:</span>
                                             <span class="value" id="playerCount">0/4</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="label">Max Players:</span>
+                                            <span class="value" id="maxPlayersDisplay">4</span>
                                         </div>
                                         <div class="detail-item">
                                             <span class="label">Host:</span>

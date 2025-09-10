@@ -51,6 +51,7 @@ class GameState {
     this.gamePhase = serverState.phase || 'waiting';
     this.winner = serverState.winner;
     this.gameStartTime = serverState.gameStartTime;
+    this.maxPlayers = serverState.maxPlayers || 4;
     this.lastUpdate = Date.now();
 
     // Update my hand
@@ -272,6 +273,7 @@ class GameState {
    * @returns {boolean} True if game can start
    */
   canStartGame() {
+    // Host can start game with at least 2 players, regardless of ready status
     return this.isHost && 
            this.players.length >= 2 && 
            this.gamePhase === 'waiting';

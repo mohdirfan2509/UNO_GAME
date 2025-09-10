@@ -53,6 +53,10 @@ class GameUI {
       this.handleLeaveRoom();
     });
 
+    document.getElementById('readyBtn')?.addEventListener('click', () => {
+      this.handleReadyToggle();
+    });
+
     document.getElementById('drawCardBtn')?.addEventListener('click', () => {
       this.handleDrawCard();
     });
@@ -364,6 +368,47 @@ class GameUI {
   }
 
   /**
+   * Handle ready toggle
+   */
+  handleReadyToggle() {
+    const readyBtn = document.getElementById('readyBtn');
+    const isReady = readyBtn.classList.contains('ready');
+    
+    if (window.socketClient && window.gameState.roomId) {
+      // Send ready status to server
+      window.socketClient.setReady(window.gameState.roomId, !isReady);
+      
+      // Show loading state
+      Utils.setLoading(readyBtn, true);
+    }
+  }
+
+  /**
+   * Update ready button state based on server response
+   * @param {boolean} ready - Ready status from server
+   */
+  updateReadyButton(ready) {
+    const readyBtn = document.getElementById('readyBtn');
+    if (!readyBtn) return;
+    
+    // Remove loading state
+    Utils.setLoading(readyBtn, false);
+    
+    // Update button state based on server response
+    if (ready) {
+      readyBtn.classList.add('ready');
+      readyBtn.innerHTML = '<i class="fas fa-times me-2"></i>Not Ready';
+      readyBtn.classList.remove('btn-warning');
+      readyBtn.classList.add('btn-success');
+    } else {
+      readyBtn.classList.remove('ready');
+      readyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Ready';
+      readyBtn.classList.remove('btn-success');
+      readyBtn.classList.add('btn-warning');
+    }
+  }
+
+  /**
    * Handle draw card
    */
   handleDrawCard() {
@@ -475,6 +520,7 @@ class GameUI {
     const lobbyRoomId = document.getElementById('lobbyRoomId');
     const roomIdDisplay = document.getElementById('roomIdDisplay');
     const playerCount = document.getElementById('playerCount');
+    const maxPlayersDisplay = document.getElementById('maxPlayersDisplay');
     const hostNameDisplay = document.getElementById('hostName');
     
     if (lobbyRoomId) {
@@ -487,7 +533,13 @@ class GameUI {
     
     if (playerCount) {
       const count = window.gameState.getPlayerCount();
-      playerCount.textContent = `${count}/4`;
+      const maxPlayers = window.gameState.maxPlayers || 4;
+      playerCount.textContent = `${count}/${maxPlayers}`;
+    }
+    
+    if (maxPlayersDisplay) {
+      const maxPlayers = window.gameState.maxPlayers || 4;
+      maxPlayersDisplay.textContent = maxPlayers;
     }
     
     if (hostNameDisplay) {
@@ -509,6 +561,9 @@ class GameUI {
       const playerItem = this.createPlayerItem(player);
       playersList.appendChild(playerItem);
     });
+    
+    // Update start game button state
+    this.updateStartGameButton();
   }
 
   /**
@@ -546,6 +601,29 @@ class GameUI {
     `;
     
     return playerItem;
+  }
+
+  /**
+   * Update start game button state
+   */
+  updateStartGameButton() {
+    const startGameBtn = document.getElementById('startGameBtn');
+    if (!startGameBtn) return;
+    
+    // Host can start game if there are at least 2 players, regardless of ready status
+    const canStart = window.gameState.isHost && 
+                     window.gameState.players.length >= 2 && 
+                     window.gameState.gamePhase === 'waiting';
+    
+    if (canStart) {
+      startGameBtn.disabled = false;
+      startGameBtn.classList.remove('btn-secondary');
+      startGameBtn.classList.add('btn-success');
+    } else {
+      startGameBtn.disabled = true;
+      startGameBtn.classList.remove('btn-success');
+      startGameBtn.classList.add('btn-secondary');
+    }
   }
 
   /**

@@ -184,6 +184,9 @@ class GameManager {
         };
       }
 
+      // Note: Removed requirement for all players to be ready
+      // Host can start game with at least 2 players regardless of ready status
+
       // Initialize game
       this.initializeGame(room);
       
@@ -390,9 +393,9 @@ class GameManager {
       player.addCards([drawnCard]);
 
       // Move to next player
-      const currentPlayerIndex = room.players.findIndex(p => p.id === player.id);
+      const playerIndex = room.players.findIndex(p => p.id === player.id);
       const nextPlayerIndex = this.gameRules.calculateNextPlayer(
-        currentPlayerIndex,
+        playerIndex,
         room.gameState.direction,
         room.players.length
       );
@@ -479,6 +482,70 @@ class GameManager {
       };
     } catch (error) {
       logger.error('Error calling UNO:', error);
+      return {
+        success: false,
+        error: ERROR_MESSAGES.SERVER_ERROR
+      };
+    }
+  }
+
+  /**
+   * Set player ready status
+   * @param {string} roomId - Room ID
+   * @param {string} playerSocketId - Socket ID of the player
+   * @param {boolean} ready - Ready status
+   * @returns {Object} Result object with success status or error
+   */
+  setReady(roomId, playerSocketId, ready) {
+    try {
+      const room = this.rooms.get(roomId);
+      
+      if (!room) {
+        return {
+          success: false,
+          error: ERROR_MESSAGES.ROOM_NOT_FOUND
+        };
+      }
+
+      if (room.gameState.phase !== GAME_PHASES.WAITING) {
+        return {
+          success: false,
+          error: 'Cannot change ready status during game'
+        };
+      }
+
+      const player = this.players.get(playerSocketId);
+      if (!player) {
+        return {
+          success: false,
+          error: ERROR_MESSAGES.PLAYER_NOT_FOUND
+        };
+      }
+
+      // Find player in room
+      const roomPlayer = room.players.find(p => p.id === player.id);
+      if (!roomPlayer) {
+        return {
+          success: false,
+          error: 'Player not in room'
+        };
+      }
+
+      // Set ready status
+      roomPlayer.setReady(ready);
+      room.lastActivity = Date.now();
+
+      logger.roomEvent('PLAYER_READY', roomId, {
+        playerName: player.name,
+        ready
+      });
+
+      return {
+        success: true,
+        room: this.getRoomInfo(room)
+      };
+    } catch (error) {
+      logger.error('Error setting ready status:', error);
       return {
         success: false,
         error: ERROR_MESSAGES.SERVER_ERROR
@@ -659,6 +726,7 @@ class GameManager {
       host: room.host.toJSON(),
       players: room.players.map(p => p.toJSON()),
       settings: room.settings,
+      maxPlayers: room.settings.maxPlayers,
       gameState: {
         phase: room.gameState.phase,
         playerCount: room.players.length,

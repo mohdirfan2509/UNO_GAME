@@ -476,6 +476,8 @@ class SocketHandler {
     try {
       const { roomId, ready } = data;
 
+      console.log('Ready status received:', { roomId, ready, socketId: socket.id });
+
       if (!roomId || typeof ready !== 'boolean') {
         socket.emit(SOCKET_EVENTS.ERROR, {
           message: 'Room ID and ready status are required'
@@ -483,18 +485,34 @@ class SocketHandler {
         return;
       }
 
-      // This would be implemented in GameManager
-      // For now, just broadcast the ready status
-      socket.to(roomId).emit(SOCKET_EVENTS.PLAYER_READY, {
-        playerId: socket.id,
-        ready
-      });
+      const result = this.gameManager.setReady(roomId, socket.id, ready);
       
-      logger.socketEvent('READY_STATUS', socket.id, {
-        roomId,
-        ready
-      });
+      console.log('Ready status result:', result);
+      
+      if (result.success) {
+        // Notify ALL players in the room (including the one who clicked ready)
+        const readyData = {
+          playerId: socket.id,
+          ready,
+          room: result.room
+        };
+        
+        console.log('Broadcasting ready status to room:', roomId, readyData);
+        
+        this.io.to(roomId).emit(SOCKET_EVENTS.PLAYER_READY, readyData);
+        
+        logger.socketEvent('READY_STATUS', socket.id, {
+          roomId,
+          ready
+        });
+      } else {
+        console.log('Ready status failed:', result.error);
+        socket.emit(SOCKET_EVENTS.ERROR, {
+          message: result.error
+        });
+      }
     } catch (error) {
+      console.error('Error handling ready status:', error);
       logger.error('Error handling ready status:', error);
       socket.emit(SOCKET_EVENTS.ERROR, {
         message: ERROR_MESSAGES.SERVER_ERROR
