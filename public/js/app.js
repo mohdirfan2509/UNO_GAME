@@ -231,7 +231,8 @@ class UnoApp {
     Utils.setStorage('playerName', data.room.host.name);
     
     // Reset loading state
-    Utils.setLoading(document.getElementById('createRoomBtn'), false);
+    const createBtn = document.querySelector('#createRoomForm button[type="submit"]');
+    if (createBtn) Utils.setLoading(createBtn, false);
   }
 
   /**
@@ -250,7 +251,8 @@ class UnoApp {
     Utils.setStorage('playerName', data.player.name);
     
     // Reset loading state
-    Utils.setLoading(document.getElementById('joinRoomBtn'), false);
+    const joinBtn = document.querySelector('#joinRoomForm button[type="submit"]');
+    if (joinBtn) Utils.setLoading(joinBtn, false);
   }
 
   /**
@@ -444,8 +446,10 @@ class UnoApp {
     this.gameUI.showError(data.message || 'Server error occurred');
     
     // Reset loading states
-    Utils.setLoading(document.getElementById('createRoomBtn'), false);
-    Utils.setLoading(document.getElementById('joinRoomBtn'), false);
+    const createBtn = document.querySelector('#createRoomForm button[type="submit"]');
+    const joinBtn = document.querySelector('#joinRoomForm button[type="submit"]');
+    if (createBtn) Utils.setLoading(createBtn, false);
+    if (joinBtn) Utils.setLoading(joinBtn, false);
     Utils.setLoading(document.getElementById('startGameBtn'), false);
     
     // Play sound

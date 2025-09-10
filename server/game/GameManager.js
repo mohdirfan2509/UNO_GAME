@@ -221,7 +221,6 @@ class GameManager {
 
     // Create new deck and shuffle
     room.gameState.deck = new Deck();
-    room.gameState.deck.shuffle();
 
     // Deal initial cards
     const dealResult = room.gameState.deck.dealInitialCards(room.players, GAME_CONFIG.CARDS_PER_PLAYER);
@@ -246,6 +245,9 @@ class GameManager {
     room.gameState.turnNumber = 1;
     room.gameState.winner = null;
     room.gameState.chosenColor = null;
+    
+    // Update players array in game state
+    room.gameState.players = room.players;
   }
 
   /**
@@ -298,8 +300,7 @@ class GameManager {
         chosenColor
       };
 
-      const newGameState = this.gameRules.handlePlayCard(room.gameState, actionData);
-      room.gameState = newGameState;
+      room.gameState = this.gameRules.handlePlayCard(room.gameState, actionData);
       room.lastActivity = Date.now();
 
       // Check for winner
@@ -364,7 +365,7 @@ class GameManager {
       }
 
       // Check if it's player's turn
-      const currentPlayerIndex = room.gameState.players.findIndex(p => p.id === player.id);
+      const currentPlayerIndex = room.players.findIndex(p => p.id === player.id);
       if (currentPlayerIndex !== room.gameState.currentPlayerIndex) {
         return {
           success: false,
@@ -389,8 +390,9 @@ class GameManager {
       player.addCards([drawnCard]);
 
       // Move to next player
+      const currentPlayerIndex = room.players.findIndex(p => p.id === player.id);
       const nextPlayerIndex = this.gameRules.calculateNextPlayer(
-        room.gameState.currentPlayerIndex,
+        currentPlayerIndex,
         room.gameState.direction,
         room.players.length
       );

@@ -243,7 +243,8 @@ class GameRules {
     };
 
     // Check if it's player's turn
-    if (gameState.currentPlayerIndex !== gameState.players.findIndex(p => p.id === player.id)) {
+    const playerIndex = gameState.players ? gameState.players.findIndex(p => p.id === player.id) : -1;
+    if (gameState.currentPlayerIndex !== playerIndex || playerIndex === -1) {
       result.error = 'Not your turn';
       return result;
     }
@@ -351,12 +352,18 @@ class GameRules {
     // Handle special card effects
     const { newState: updatedState, action } = this.handleSpecialCards(playedCard, newState);
     
+    // Set chosen color for wild cards
+    if (playedCard.isWild() && chosenColor) {
+      updatedState.chosenColor = chosenColor;
+      updatedState.currentColor = chosenColor;
+    }
+    
     // Calculate next player
-    const currentPlayerIndex = newState.players.findIndex(p => p.id === player.id);
+    const currentPlayerIndex = updatedState.players.findIndex(p => p.id === player.id);
     const nextPlayerIndex = this.calculateNextPlayer(
       currentPlayerIndex,
       updatedState.direction,
-      newState.players.length,
+      updatedState.players.length,
       action.skipNextPlayer
     );
 
@@ -386,11 +393,11 @@ class GameRules {
     player.addCards(drawnCards);
 
     // Move to next player
-    const currentPlayerIndex = newState.players.findIndex(p => p.id === player.id);
+    const currentPlayerIndex = newState.players ? newState.players.findIndex(p => p.id === player.id) : 0;
     const nextPlayerIndex = this.calculateNextPlayer(
       currentPlayerIndex,
       newState.direction,
-      newState.players.length
+      newState.players ? newState.players.length : 1
     );
 
     newState.currentPlayerIndex = nextPlayerIndex;
@@ -415,7 +422,7 @@ class GameRules {
       player.callUno();
     } else if (unoResult.shouldPenalize) {
       // Penalize player for calling UNO with more than 1 card
-      const penaltyCards = newState.deck.drawCards(GAME_RULES.UNO_PENALTY_CARDS);
+      const penaltyCards = newState.deck.drawCards(2); // UNO_PENALTY_CARDS
       player.addCards(penaltyCards);
     }
 

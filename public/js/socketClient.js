@@ -53,79 +53,79 @@ class SocketClient {
 
     // Game events
     this.socket.on('room-created', (data) => {
-      this.emit('room-created', data);
+      this.emitLocal('room-created', data);
     });
 
     this.socket.on('room-joined', (data) => {
-      this.emit('room-joined', data);
+      this.emitLocal('room-joined', data);
     });
 
     this.socket.on('player-joined', (data) => {
-      this.emit('player-joined', data);
+      this.emitLocal('player-joined', data);
     });
 
     this.socket.on('player-left', (data) => {
-      this.emit('player-left', data);
+      this.emitLocal('player-left', data);
     });
 
     this.socket.on('game-started', (data) => {
-      this.emit('game-started', data);
+      this.emitLocal('game-started', data);
     });
 
     this.socket.on('game-state-update', (data) => {
-      this.emit('game-state-update', data);
+      this.emitLocal('game-state-update', data);
     });
 
     this.socket.on('card-played', (data) => {
-      this.emit('card-played', data);
+      this.emitLocal('card-played', data);
     });
 
     this.socket.on('card-drawn', (data) => {
-      this.emit('card-drawn', data);
+      this.emitLocal('card-drawn', data);
     });
 
     this.socket.on('turn-changed', (data) => {
-      this.emit('turn-changed', data);
+      this.emitLocal('turn-changed', data);
     });
 
     this.socket.on('uno-called', (data) => {
-      this.emit('uno-called', data);
+      this.emitLocal('uno-called', data);
     });
 
     this.socket.on('color-chosen', (data) => {
-      this.emit('color-chosen', data);
+      this.emitLocal('color-chosen', data);
     });
 
     this.socket.on('game-ended', (data) => {
-      this.emit('game-ended', data);
+      this.emitLocal('game-ended', data);
     });
 
     this.socket.on('invalid-move', (data) => {
-      this.emit('invalid-move', data);
+      this.emitLocal('invalid-move', data);
     });
 
     this.socket.on('error', (data) => {
-      this.emit('error', data);
+      this.emitLocal('error', data);
     });
 
     this.socket.on('connection-status', (data) => {
-      this.emit('connection-status', data);
+      this.emitLocal('connection-status', data);
     });
 
     this.socket.on('room-full', (data) => {
-      this.emit('room-full', data);
+      this.emitLocal('room-full', data);
     });
 
     this.socket.on('room-not-found', (data) => {
-      this.emit('room-not-found', data);
+      this.emitLocal('room-not-found', data);
     });
 
     this.socket.on('player-disconnected', (data) => {
-      this.emit('player-disconnected', data);
+      this.emitLocal('player-disconnected', data);
     });
 
     this.socket.on('player-reconnected', (data) => {
-      this.emit('player-reconnected', data);
+      this.emitLocal('player-reconnected', data);
     });
   }
 
@@ -167,7 +167,7 @@ class SocketClient {
     this.reconnectAttempts = 0;
     
     this.updateConnectionStatus();
-    this.emit('connected', { socketId: this.socket.id });
+    this.emitLocal('connected', { socketId: this.socket.id });
     
     Utils.showToast('Connected to server', 'success');
   }
@@ -182,7 +182,7 @@ class SocketClient {
     this.connectionStatus = 'disconnected';
     
     this.updateConnectionStatus();
-    this.emit('disconnected', { reason });
+    this.emitLocal('disconnected', { reason });
     
     if (reason === 'io server disconnect') {
       // Server initiated disconnect, don't reconnect
@@ -202,7 +202,7 @@ class SocketClient {
     this.connectionStatus = 'error';
     
     this.updateConnectionStatus();
-    this.emit('connection-error', { error: error.message });
+    this.emitLocal('connection-error', { error: error.message });
     
     Utils.showToast('Connection error: ' + error.message, 'error');
     this.attemptReconnect();
@@ -381,7 +381,7 @@ class SocketClient {
    * @param {string} event - Event name
    * @param {any} data - Event data
    */
-  emit(event, data) {
+  emitLocal(event, data) {
     if (!this.eventHandlers.has(event)) return;
     
     this.eventHandlers.get(event).forEach(handler => {

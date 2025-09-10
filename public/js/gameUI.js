@@ -261,8 +261,7 @@ class GameUI {
   handleCreateRoom(e) {
     e.preventDefault();
     
-    const formData = new FormData(e.target);
-    const playerName = formData.get('hostName') || document.getElementById('hostName').value;
+    const playerName = document.getElementById('hostName').value;
     const maxPlayers = parseInt(document.getElementById('maxPlayers').value);
     
     if (!playerName || playerName.trim() === '') {
@@ -275,7 +274,7 @@ class GameUI {
       return;
     }
     
-    const createBtn = document.getElementById('createRoomBtn');
+    const createBtn = e.target.querySelector('button[type="submit"]');
     Utils.setLoading(createBtn, true);
     
     const settings = {
@@ -301,9 +300,8 @@ class GameUI {
   handleJoinRoom(e) {
     e.preventDefault();
     
-    const formData = new FormData(e.target);
-    const roomId = formData.get('roomId') || document.getElementById('roomId').value;
-    const playerName = formData.get('playerName') || document.getElementById('playerName').value;
+    const roomId = document.getElementById('roomId').value;
+    const playerName = document.getElementById('playerName').value;
     
     if (!roomId || roomId.trim() === '') {
       Utils.showToast('Please enter a room ID', 'error');
@@ -325,7 +323,7 @@ class GameUI {
       return;
     }
     
-    const joinBtn = document.getElementById('joinRoomBtn');
+    const joinBtn = e.target.querySelector('button[type="submit"]');
     Utils.setLoading(joinBtn, true);
     
     console.log('Joining room with:', { roomId: roomId.toUpperCase(), playerName });
@@ -474,9 +472,14 @@ class GameUI {
    * Update room information
    */
   updateRoomInfo() {
+    const lobbyRoomId = document.getElementById('lobbyRoomId');
     const roomIdDisplay = document.getElementById('roomIdDisplay');
     const playerCount = document.getElementById('playerCount');
-    const hostName = document.getElementById('hostName');
+    const hostNameDisplay = document.getElementById('hostName');
+    
+    if (lobbyRoomId) {
+      lobbyRoomId.textContent = window.gameState.roomId || '-';
+    }
     
     if (roomIdDisplay) {
       roomIdDisplay.textContent = window.gameState.roomId || '-';
@@ -487,9 +490,9 @@ class GameUI {
       playerCount.textContent = `${count}/4`;
     }
     
-    if (hostName) {
+    if (hostNameDisplay) {
       const host = window.gameState.players.find(p => p.isHost);
-      hostName.textContent = host ? host.name : '-';
+      hostNameDisplay.textContent = host ? host.name : '-';
     }
   }
 
@@ -600,9 +603,18 @@ class GameUI {
   updateOtherPlayers() {
     const otherPlayers = window.gameState.getOtherPlayers();
     
+    // Hide all player slots first
+    for (let i = 1; i <= 3; i++) {
+      const playerSlot = document.getElementById(`playerSlot${i}`);
+      if (playerSlot) {
+        playerSlot.style.display = 'none';
+      }
+    }
+    
     otherPlayers.forEach((player, index) => {
       const playerSlot = document.getElementById(`playerSlot${index + 1}`);
       if (playerSlot) {
+        playerSlot.style.display = 'block';
         this.updatePlayerSlot(playerSlot, player, index);
       }
     });
