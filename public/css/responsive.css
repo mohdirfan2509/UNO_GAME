@@ -1,0 +1,580 @@
+/* UNO Multiplayer - Responsive Styles */
+
+/* Mobile First Approach */
+
+/* Extra Small Devices (phones, 576px and down) */
+@media (max-width: 575.98px) {
+  /* Typography */
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  /* Spacing */
+  .main-content {
+    padding: var(--spacing-md) 0;
+  }
+  
+  .hero-section {
+    padding: var(--spacing-lg) 0;
+  }
+  
+  /* Action Buttons */
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .action-buttons .btn {
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  /* Cards */
+  .glass-card .card-body {
+    padding: var(--spacing-md);
+  }
+  
+  .glass-card .card-header {
+    padding: var(--spacing-md);
+  }
+  
+  /* Game Board */
+  .game-board {
+    grid-template-areas: 
+      "player1"
+      "center"
+      "player2"
+      "player3"
+      "current";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    gap: var(--spacing-md);
+  }
+  
+  .center-area {
+    order: 2;
+  }
+  
+  .other-players {
+    order: 1;
+  }
+  
+  .current-player-area {
+    order: 3;
+  }
+  
+  /* Player Slots */
+  .player-slot {
+    padding: var(--spacing-sm);
+  }
+  
+  .player-slot .player-info {
+    gap: var(--spacing-sm);
+  }
+  
+  .player-slot .player-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+  
+  /* Cards */
+  .uno-card {
+    width: 50px;
+    height: 70px;
+    font-size: 0.75rem;
+  }
+  
+  .card-back {
+    width: 60px;
+    height: 84px;
+  }
+  
+  .player-cards .card-back {
+    width: 16px;
+    height: 22px;
+  }
+  
+  /* Deck Area */
+  .deck-area {
+    gap: var(--spacing-md);
+  }
+  
+  /* Current Color */
+  .current-color {
+    padding: var(--spacing-sm) var(--spacing-md);
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .color-indicator {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* Game Actions */
+  .game-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .game-actions .btn {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  /* Player Hand */
+  .player-hand {
+    gap: var(--spacing-xs);
+    min-height: 100px;
+  }
+  
+  /* Lobby Actions */
+  .lobby-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .lobby-actions .btn {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  /* Room Details */
+  .room-details {
+    gap: var(--spacing-sm);
+  }
+  
+  .detail-item {
+    padding: var(--spacing-xs) 0;
+  }
+  
+  /* QR Code */
+  .qr-code {
+    width: 100px;
+    height: 100px;
+  }
+  
+  /* Color Picker */
+  .color-options {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+  
+  .color-btn {
+    padding: var(--spacing-md);
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+  
+  .color-btn i {
+    font-size: 1.5rem;
+  }
+  
+  /* Game Header */
+  .game-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .game-info {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    text-align: center;
+  }
+  
+  /* Navigation */
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+  
+  /* Modals */
+  .modal-dialog {
+    margin: var(--spacing-sm);
+  }
+  
+  .modal-content {
+    border-radius: var(--radius-lg);
+  }
+  
+  /* Toast */
+  .toast-container {
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    left: var(--spacing-sm);
+  }
+  
+  .toast {
+    margin-bottom: var(--spacing-sm);
+  }
+}
+
+/* Small Devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  /* Game Board */
+  .game-board {
+    grid-template-areas: 
+      "player1 player1"
+      "center center"
+      "player2 player3"
+      "current current";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto;
+  }
+  
+  /* Cards */
+  .uno-card {
+    width: 55px;
+    height: 77px;
+    font-size: 0.8rem;
+  }
+  
+  .card-back {
+    width: 70px;
+    height: 98px;
+  }
+  
+  /* Player Hand */
+  .player-hand {
+    gap: var(--spacing-sm);
+  }
+  
+  /* Color Picker */
+  .color-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Medium Devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  /* Game Board */
+  .game-board {
+    grid-template-areas: 
+      "player1 player1 player1"
+      "player2 center player3"
+      "current current current";
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+  
+  /* Cards */
+  .uno-card {
+    width: 60px;
+    height: 84px;
+    font-size: 0.875rem;
+  }
+  
+  .card-back {
+    width: 80px;
+    height: 112px;
+  }
+  
+  /* Player Hand */
+  .player-hand {
+    gap: var(--spacing-sm);
+  }
+  
+  /* Center Area */
+  .center-area {
+    gap: var(--spacing-lg);
+  }
+  
+  /* Deck Area */
+  .deck-area {
+    gap: var(--spacing-lg);
+  }
+}
+
+/* Large Devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  /* Game Board */
+  .game-board {
+    gap: var(--spacing-lg);
+  }
+  
+  /* Cards */
+  .uno-card {
+    width: 65px;
+    height: 91px;
+  }
+  
+  .card-back {
+    width: 85px;
+    height: 119px;
+  }
+  
+  /* Player Hand */
+  .player-hand {
+    gap: var(--spacing-md);
+  }
+}
+
+/* Extra Large Devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  /* Game Board */
+  .game-board {
+    gap: var(--spacing-xl);
+  }
+  
+  /* Cards */
+  .uno-card {
+    width: 70px;
+    height: 98px;
+  }
+  
+  .card-back {
+    width: 90px;
+    height: 126px;
+  }
+  
+  /* Player Hand */
+  .player-hand {
+    gap: var(--spacing-md);
+  }
+  
+  /* Container */
+  .container {
+    max-width: 1200px;
+  }
+}
+
+/* Landscape Orientation */
+@media (orientation: landscape) and (max-height: 600px) {
+  /* Reduce vertical spacing */
+  .main-content {
+    padding: var(--spacing-sm) 0;
+  }
+  
+  .hero-section {
+    padding: var(--spacing-md) 0;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  /* Game Board */
+  .game-board {
+    min-height: 50vh;
+    gap: var(--spacing-sm);
+  }
+  
+  /* Player Hand */
+  .player-hand {
+    min-height: 80px;
+  }
+  
+  /* Cards */
+  .uno-card {
+    width: 45px;
+    height: 63px;
+    font-size: 0.7rem;
+  }
+  
+  .card-back {
+    width: 60px;
+    height: 84px;
+  }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Ensure crisp rendering on high DPI displays */
+  .uno-card,
+  .card-back,
+  .color-indicator {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase touch targets */
+  .uno-card {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  .glass-button {
+    min-height: 44px;
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  
+  .color-btn {
+    min-height: 60px;
+  }
+  
+  .menu-btn {
+    min-height: 50px;
+  }
+  
+  /* Remove hover effects on touch devices */
+  .uno-card:hover {
+    transform: none;
+    box-shadow: var(--glass-shadow);
+  }
+  
+  .glass-button:hover {
+    transform: none;
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    color: var(--text-primary);
+  }
+  
+  .player-item:hover {
+    transform: none;
+    background: var(--glass-bg);
+  }
+  
+  /* Add active states for touch */
+  .uno-card:active {
+    transform: scale(0.95);
+  }
+  
+  .glass-button:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Print Styles */
+@media print {
+  /* Hide interactive elements */
+  .glass-button,
+  .game-actions,
+  .lobby-actions,
+  .navbar,
+  .modal,
+  .toast-container {
+    display: none !important;
+  }
+  
+  /* Adjust colors for print */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .glass-card {
+    background: white !important;
+    border: 1px solid black !important;
+    box-shadow: none !important;
+  }
+  
+  .uno-card {
+    background: white !important;
+    border: 1px solid black !important;
+    color: black !important;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable animations for users who prefer reduced motion */
+  .uno-card,
+  .glass-button,
+  .player-item,
+  .loading-spinner {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  /* Keep essential transitions for usability */
+  .glass-button:focus,
+  .glass-input:focus,
+  .uno-card:focus {
+    transition: box-shadow 0.2s ease-out;
+  }
+}
+
+/* Accessibility - High Contrast */
+@media (prefers-contrast: high) {
+  /* Increase contrast for better visibility */
+  .glass-card {
+    border: 2px solid var(--text-primary);
+  }
+  
+  .glass-button {
+    border: 2px solid var(--text-primary);
+  }
+  
+  .uno-card {
+    border: 2px solid var(--text-primary);
+  }
+  
+  .color-indicator {
+    border: 3px solid var(--text-primary);
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  /* Already optimized for dark mode, but can add specific adjustments */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+  }
+  
+  .glass-button {
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
+
+/* Light Mode Support */
+@media (prefers-color-scheme: light) {
+  /* Adjust for light mode if needed */
+  :root {
+    --glass-bg: rgba(0, 0, 0, 0.05);
+    --glass-bg-hover: rgba(0, 0, 0, 0.1);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+  }
+  
+  body {
+    background: #f8fafc;
+  }
+  
+  .glass-card {
+    background: rgba(255, 255, 255, 0.8);
+  }
+  
+  .glass-button {
+    background: rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* Container Queries (Future-proofing) */
+@container (max-width: 400px) {
+  .player-hand {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .uno-card {
+    width: 50px;
+    height: 70px;
+  }
+}
+
+@container (min-width: 800px) {
+  .player-hand {
+    justify-content: center;
+  }
+  
+  .uno-card {
+    width: 70px;
+    height: 98px;
+  }
+}
