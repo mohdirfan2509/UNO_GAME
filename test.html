@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNO Multiplayer - Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #4CAF50; }
+        .error { background: #f44336; }
+        .info { background: #2196F3; }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #45a049; }
+        button:disabled { background: #666; cursor: not-allowed; }
+        input, select {
+            padding: 8px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 UNO Multiplayer - Test Page</h1>
+    
+    <div class="test-section">
+        <h2>Connection Status</h2>
+        <div id="connectionStatus" class="status info">Connecting...</div>
+        <div id="socketId" class="status info">Socket ID: -</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Create Room Test</h2>
+        <input type="text" id="hostName" placeholder="Your Name" value="TestHost">
+        <select id="maxPlayers">
+            <option value="2">2 Players</option>
+            <option value="3">3 Players</option>
+            <option value="4" selected>4 Players</option>
+        </select>
+        <button id="createRoomBtn" onclick="testCreateRoom()">Create Room</button>
+        <div id="createResult" class="status info" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Join Room Test</h2>
+        <input type="text" id="roomId" placeholder="Room ID (6 characters)" maxlength="6">
+        <input type="text" id="playerName" placeholder="Your Name" value="TestPlayer">
+        <button id="joinRoomBtn" onclick="testJoinRoom()">Join Room</button>
+        <div id="joinResult" class="status info" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Game Actions Test</h2>
+        <button id="startGameBtn" onclick="testStartGame()" disabled>Start Game</button>
+        <button id="leaveRoomBtn" onclick="testLeaveRoom()" disabled>Leave Room</button>
+        <div id="gameResult" class="status info" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Console Log</h2>
+        <div id="consoleLog" style="background: #000; padding: 10px; border-radius: 5px; height: 200px; overflow-y: auto; font-family: monospace; font-size: 12px;"></div>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = null;
+        let currentRoomId = null;
+        let isHost = false;
+
+        // Initialize socket connection
+        function initSocket() {
+            socket = io();
+            
+            socket.on('connect', () => {
+                updateStatus('Connected to server', 'success');
+                document.getElementById('socketId').textContent = `Socket ID: ${socket.id}`;
+                log('Connected to server with ID: ' + socket.id);
+            });
+
+            socket.on('disconnect', (reason) => {
+                updateStatus('Disconnected: ' + reason, 'error');
+                log('Disconnected: ' + reason);
+            });
+
+            socket.on('connect_error', (error) => {
+                updateStatus('Connection error: ' + error.message, 'error');
+                log('Connection error: ' + error.message);
+            });
+
+            // Room events
+            socket.on('room-created', (data) => {
+                currentRoomId = data.roomId;
+                isHost = true;
+                updateStatus('Room created: ' + data.roomId, 'success');
+                document.getElementById('createResult').style.display = 'block';
+                document.getElementById('createResult').textContent = 'Room created: ' + data.roomId;
+                document.getElementById('createResult').className = 'status success';
+                document.getElementById('startGameBtn').disabled = false;
+                document.getElementById('leaveRoomBtn').disabled = false;
+                log('Room created: ' + JSON.stringify(data));
+            });
+
+            socket.on('room-joined', (data) => {
+                currentRoomId = data.room.id;
+                isHost = false;
+                updateStatus('Joined room: ' + data.room.id, 'success');
+                document.getElementById('joinResult').style.display = 'block';
+                document.getElementById('joinResult').textContent = 'Joined room: ' + data.room.id;
+                document.getElementById('joinResult').className = 'status success';
+                document.getElementById('leaveRoomBtn').disabled = false;
+                log('Room joined: ' + JSON.stringify(data));
+            });
+
+            socket.on('player-joined', (data) => {
+                log('Player joined: ' + data.player.name);
+            });
+
+            socket.on('player-left', (data) => {
+                log('Player left: ' + JSON.stringify(data));
+            });
+
+            socket.on('game-started', (data) => {
+                updateStatus('Game started!', 'success');
+                log('Game started: ' + JSON.stringify(data));
+            });
+
+            socket.on('error', (data) => {
+                updateStatus('Error: ' + data.message, 'error');
+                log('Error: ' + JSON.stringify(data));
+            });
+
+            socket.on('room-full', (data) => {
+                updateStatus('Room is full', 'error');
+                log('Room full: ' + JSON.stringify(data));
+            });
+
+            socket.on('room-not-found', (data) => {
+                updateStatus('Room not found', 'error');
+                log('Room not found: ' + JSON.stringify(data));
+            });
+        }
+
+        function updateStatus(message, type) {
+            const status = document.getElementById('connectionStatus');
+            status.textContent = message;
+            status.className = 'status ' + type;
+        }
+
+        function log(message) {
+            const consoleLog = document.getElementById('consoleLog');
+            const timestamp = new Date().toLocaleTimeString();
+            consoleLog.innerHTML += `[${timestamp}] ${message}\n`;
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('consoleLog').innerHTML = '';
+        }
+
+        function testCreateRoom() {
+            const playerName = document.getElementById('hostName').value;
+            const maxPlayers = parseInt(document.getElementById('maxPlayers').value);
+            
+            if (!playerName) {
+                alert('Please enter your name');
+                return;
+            }
+
+            log('Creating room with name: ' + playerName + ', max players: ' + maxPlayers);
+            socket.emit('create-room', {
+                playerName: playerName,
+                settings: {
+                    maxPlayers: maxPlayers,
+                    gameMode: 'classic',
+                    allowSpectators: false
+                }
+            });
+        }
+
+        function testJoinRoom() {
+            const roomId = document.getElementById('roomId').value;
+            const playerName = document.getElementById('playerName').value;
+            
+            if (!roomId || !playerName) {
+                alert('Please enter room ID and your name');
+                return;
+            }
+
+            log('Joining room: ' + roomId + ' with name: ' + playerName);
+            socket.emit('join-room', {
+                roomId: roomId.toUpperCase(),
+                playerName: playerName
+            });
+        }
+
+        function testStartGame() {
+            if (!currentRoomId) {
+                alert('No room to start');
+                return;
+            }
+
+            log('Starting game in room: ' + currentRoomId);
+            socket.emit('start-game', { roomId: currentRoomId });
+        }
+
+        function testLeaveRoom() {
+            if (!currentRoomId) {
+                alert('No room to leave');
+                return;
+            }
+
+            log('Leaving room: ' + currentRoomId);
+            socket.emit('leave-room', { roomId: currentRoomId });
+            currentRoomId = null;
+            isHost = false;
+            document.getElementById('startGameBtn').disabled = true;
+            document.getElementById('leaveRoomBtn').disabled = true;
+            document.getElementById('createResult').style.display = 'none';
+            document.getElementById('joinResult').style.display = 'none';
+        }
+
+        // Initialize when page loads
+        window.onload = function() {
+            initSocket();
+            log('Test page loaded');
+        };
+    </script>
+</body>
+</html>

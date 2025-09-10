@@ -1,0 +1,21 @@
+{
+  "name": "uno-multiplayer-server",
+  "version": "1.0.0",
+  "description": "UNO Multiplayer Web Application - Backend Server",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": ["uno", "multiplayer", "websocket", "game"],
+  "author": "UNO Multiplayer Team",
+  "license": "MIT"
+}
