@@ -414,6 +414,40 @@ class Utils {
   }
 
   /**
+   * Test vibration patterns for special cards
+   * This function can be called from browser console for testing
+   */
+  static testVibrationPatterns() {
+    console.log('Testing vibration patterns for special cards...');
+    
+    const patterns = {
+      'wild': [200, 100, 200],
+      'wild-draw4': [300, 100, 300],
+      'skip': [150, 50, 150],
+      'reverse': [100, 50, 100, 50, 100],
+      'wild-activation': [200, 100, 200]
+    };
+
+    let index = 0;
+    const testPattern = () => {
+      if (index < Object.keys(patterns).length) {
+        const cardType = Object.keys(patterns)[index];
+        const pattern = patterns[cardType];
+        
+        console.log(`Testing ${cardType}:`, pattern);
+        Utils.vibrate(pattern);
+        
+        index++;
+        setTimeout(testPattern, 2000); // Wait 2 seconds between tests
+      } else {
+        console.log('Vibration pattern testing complete!');
+      }
+    };
+
+    testPattern();
+  }
+
+  /**
    * Play sound effect
    * @param {string} sound - Sound name
    * @param {number} volume - Volume (0-1)

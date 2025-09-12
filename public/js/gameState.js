@@ -54,6 +54,11 @@ class GameState {
     this.maxPlayers = serverState.maxPlayers || 4;
     this.lastUpdate = Date.now();
 
+    // Store room data if provided
+    if (serverState.roomData) {
+      this.roomData = serverState.roomData;
+    }
+
     // Update my hand
     const myPlayer = this.players.find(p => p.id === this.playerId);
     if (myPlayer && myPlayer.hand) {

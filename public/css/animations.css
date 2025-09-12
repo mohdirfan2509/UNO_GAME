@@ -281,6 +281,103 @@
   }
 }
 
+/* Card-specific Animations */
+@keyframes playablePulse {
+  0%, 100% {
+    box-shadow: 
+      0 4px 8px rgba(0, 0, 0, 0.3),
+      0 8px 16px rgba(0, 0, 0, 0.2),
+      0 0 20px rgba(251, 191, 36, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 4px 8px rgba(0, 0, 0, 0.3),
+      0 8px 16px rgba(0, 0, 0, 0.2),
+      0 0 25px rgba(251, 191, 36, 0.6),
+      0 0 35px rgba(251, 191, 36, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Glassy Card Back Animations */
+@keyframes glassyShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes glassyGlow {
+  0%, 100% {
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      0 4px 16px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.5),
+      0 8px 24px rgba(0, 0, 0, 0.4),
+      0 0 20px rgba(255, 255, 255, 0.2),
+      inset 0 2px 0 rgba(255, 255, 255, 0.2);
+  }
+}
+
+@keyframes unoTextGlow {
+  0%, 100% {
+    text-shadow: 
+      1px 1px 0px #000000,
+      2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+  50% {
+    text-shadow: 
+      1px 1px 0px #000000,
+      2px 2px 6px rgba(0, 0, 0, 0.8),
+      0 0 12px rgba(255, 221, 0, 0.6);
+  }
+}
+
+@keyframes cardFlip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(90deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes cardDeal3D {
+  0% {
+    transform: translateY(-100px) rotateX(-20deg) rotateZ(-10deg);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-50px) rotateX(-10deg) rotateZ(-5deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(0) rotateX(2deg) rotateY(-1deg) rotateZ(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes cardShine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 /* Notification Animations */
 @keyframes notificationSlideIn {
   0% {
@@ -519,6 +616,35 @@
 
 .animate-hover-glow {
   animation: hoverGlow 0.3s ease-out;
+}
+
+/* Enhanced Card Animation Classes */
+.animate-card-flip {
+  animation: cardFlip 0.6s ease-in-out;
+}
+
+.animate-card-deal-3d {
+  animation: cardDeal3D 0.8s ease-out;
+}
+
+.animate-card-shine {
+  animation: cardShine 1.5s ease-in-out;
+}
+
+.animate-playable-pulse {
+  animation: playablePulse 2s ease-in-out infinite;
+}
+
+.animate-glassy-shimmer {
+  animation: glassyShimmer 2s ease-in-out infinite;
+}
+
+.animate-glassy-glow {
+  animation: glassyGlow 3s ease-in-out infinite;
+}
+
+.animate-uno-text-glow {
+  animation: unoTextGlow 2s ease-in-out infinite;
 }
 
 /* Animation Delays */

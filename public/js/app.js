@@ -1,5 +1,15 @@
 /**
  * UNO Multiplayer - Main Application
+ * 
+ * Vibration Features:
+ * - Wild cards: Medium-long vibration pattern [200, 100, 200]
+ * - Wild Draw 4: Longer vibration pattern [300, 100, 300]
+ * - Skip cards: Short-medium vibration pattern [150, 50, 150]
+ * - Reverse cards: Quick triple vibration pattern [100, 50, 100, 50, 100]
+ * - Wild card activation (color chosen): Medium-long vibration [200, 100, 200]
+ * 
+ * All participants receive vibration when special cards are played or activated.
+ * Test vibration patterns by calling Utils.testVibrationPatterns() in browser console.
  */
 
 class UnoApp {
@@ -229,7 +239,8 @@ class UnoApp {
     this.gameState.setPlayerInfo(data.room.host.id, data.room.host.socketId, data.room.host.name, true);
     this.gameState.updateFromServer({ 
       players: data.room.players,
-      maxPlayers: data.room.maxPlayers
+      maxPlayers: data.room.maxPlayers,
+      roomData: data.room
     });
     
     this.gameUI.showPage('lobby');
@@ -252,7 +263,8 @@ class UnoApp {
     this.gameState.setPlayerInfo(data.player.id, data.player.socketId, data.player.name, false);
     this.gameState.updateFromServer({ 
       players: data.room.players,
-      maxPlayers: data.room.maxPlayers
+      maxPlayers: data.room.maxPlayers,
+      roomData: data.room
     });
     
     this.gameUI.showPage('lobby');
@@ -341,6 +353,11 @@ class UnoApp {
     
     // Play sound
     Utils.playSound('card-play');
+    
+    // Vibrate for special cards
+    if (data.playedCard) {
+      this.handleSpecialCardVibration(data.playedCard);
+    }
   }
 
   /**
@@ -413,6 +430,15 @@ class UnoApp {
     
     // Play sound
     Utils.playSound('color-change');
+    
+    // Vibrate for wild card activation (color chosen)
+    Utils.vibrate([200, 100, 200]);
+    console.log('Vibrating for wild card activation (color chosen)');
+    
+    // Show visual feedback for debugging (can be removed in production)
+    if (this.gameUI) {
+      this.gameUI.showInfo(`🔔 Wild card activated! Color: ${data.color}`);
+    }
   }
 
   /**
@@ -511,14 +537,12 @@ class UnoApp {
     
     // Find the player who changed ready status
     const player = this.gameState.players.find(p => p.socketId === data.playerId);
-    console.log('Found player:', player, 'Current player ID:', this.gameState.playerId);
     
     if (player) {
       this.gameUI.showInfo(`${player.name} is ${data.ready ? 'ready' : 'not ready'}`);
       
       // If this is the current player, update their ready button
-      if (player.id === this.gameState.playerId) {
-        console.log('Updating ready button for current player:', data.ready);
+      if (player.socketId === this.gameState.socketId || player.id === this.gameState.playerId) {
         this.gameUI.updateReadyButton(data.ready);
       }
     }
@@ -536,6 +560,33 @@ class UnoApp {
     const cardElement = this.cardRenderer.getCardElement(card.id);
     if (cardElement) {
       this.cardRenderer.animateCardPlay(cardElement);
+    }
+  }
+
+  /**
+   * Handle vibration for special cards
+   * @param {Object} card - Card object
+   */
+  handleSpecialCardVibration(card) {
+    if (!card || !card.value) return;
+
+    // Define vibration patterns for different special cards
+    const vibrationPatterns = {
+      'wild': [200, 100, 200],           // Wild card: medium-long vibration
+      'wild-draw4': [300, 100, 300],     // Wild Draw 4: longer vibration
+      'skip': [150, 50, 150],            // Skip: short-medium vibration
+      'reverse': [100, 50, 100, 50, 100] // Reverse: quick triple vibration
+    };
+
+    const pattern = vibrationPatterns[card.value];
+    if (pattern) {
+      Utils.vibrate(pattern);
+      console.log(`Vibrating for ${card.value} card:`, pattern);
+      
+      // Show visual feedback for debugging (can be removed in production)
+      if (this.gameUI) {
+        this.gameUI.showInfo(`🔔 ${card.value.toUpperCase()} card played!`);
+      }
     }
   }
 

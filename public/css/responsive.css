@@ -2,11 +2,20 @@
 
 /* Mobile First Approach */
 
+/* ========================================
+   MOBILE DEVICES (Portrait)
+   ======================================== */
+
 /* Extra Small Devices (phones, 576px and down) */
 @media (max-width: 575.98px) {
   /* Typography */
   .hero-title {
     font-size: 2.5rem;
+  }
+  
+  /* Hide dice icon on mobile */
+  .hero-title .fas.fa-dice-d20 {
+    display: none;
   }
   
   .hero-subtitle {
@@ -59,44 +68,114 @@
     order: 2;
   }
   
+  /* Other Players - Make inline for mobile */
   .other-players {
     order: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-xs);
   }
   
   .current-player-area {
     order: 3;
   }
   
-  /* Player Slots */
+  /* Player Slots - Compact for inline display */
   .player-slot {
-    padding: var(--spacing-sm);
+    padding: var(--spacing-xs);
+    flex: 1;
+    min-width: 0;
+    max-width: calc(50% - var(--spacing-xs));
   }
   
   .player-slot .player-info {
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-xs);
   }
   
   .player-slot .player-avatar {
-    width: 28px;
-    height: 28px;
-    font-size: 0.8rem;
+    width: 20px;
+    height: 20px;
+    font-size: 0.6rem;
   }
   
-  /* Cards */
+  .player-slot .player-name {
+    font-size: 0.7rem;
+    max-width: 80px; /* Limit width for mobile */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .player-slot .card-count {
+    font-size: 0.6rem;
+  }
+  
+  .player-slot .player-cards {
+    gap: 1px;
+  }
+  
+  .player-slot .player-cards .card-back {
+    width: 12px;
+    height: 16px;
+    border-radius: 1px;
+  }
+  
+  .player-slot .player-cards .card-back::after {
+    font-size: 0.15rem;
+    letter-spacing: 0.02px;
+  }
+  
+  /* Cards - Enhanced 3D Design */
   .uno-card {
     width: 50px;
     height: 70px;
     font-size: 0.75rem;
+    
+    /* Adjust 3D effects for mobile */
+    transform: rotateX(1deg) rotateY(-0.5deg) translateZ(0);
+  }
+  
+  .uno-card:hover {
+    transform: translateY(-10px) scale(1.05) rotateX(3deg) rotateY(-1deg) translateZ(5px);
+  }
+  
+  .uno-card .card-value {
+    font-size: 1.1rem;
+  }
+  
+  .uno-card .card-corner {
+    font-size: 0.4rem;
   }
   
   .card-back {
     width: 60px;
     height: 84px;
+    border-radius: 6px; /* Adjusted for mobile */
+    
+    /* No 3D effects for mobile */
+    transform: none;
+  }
+  
+  .card-back:hover {
+    transform: translateY(-6px) scale(1.03);
+  }
+  
+  .card-back::after {
+    font-size: 1.0rem; /* Increased for mobile to fit perfectly in red oval */
+    letter-spacing: 0.5px;
   }
   
   .player-cards .card-back {
     width: 16px;
     height: 22px;
+    border-radius: 2px; /* Adjusted for mobile */
+  }
+  
+  .player-cards .card-back::after {
+    font-size: 0.2rem; /* Adjusted for mobile to fit in oval */
+    letter-spacing: 0.05px;
   }
   
   /* Deck Area */
@@ -116,15 +195,18 @@
     height: 20px;
   }
   
-  /* Game Actions */
+  /* Game Actions - Keep inline for mobile */
   .game-actions {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--spacing-xs);
   }
   
   .game-actions .btn {
-    width: 100%;
-    max-width: 200px;
+    flex: 1;
+    max-width: 120px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.75rem;
   }
   
   /* Player Hand */
@@ -177,15 +259,25 @@
   
   /* Game Header */
   .game-header {
-    padding: var(--spacing-sm) var(--spacing-md);
-    flex-direction: column;
-    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    flex-direction: row; /* Keep inline for mobile/tablet */
+    gap: var(--spacing-xs);
   }
   
   .game-info {
-    flex-direction: column;
+    flex-direction: row; /* Keep inline for mobile/tablet */
     gap: var(--spacing-sm);
-    text-align: center;
+    text-align: left; /* Align left for inline layout */
+  }
+  
+  /* Make game header elements more compact on mobile */
+  .room-id, .turn-info {
+    font-size: 0.75rem; /* Smaller font for mobile */
+  }
+  
+  .game-controls .btn {
+    padding: 0.25rem 0.5rem; /* Smaller button padding */
+    font-size: 0.75rem;
   }
   
   /* Navigation */
@@ -214,8 +306,17 @@
   }
 }
 
+/* ========================================
+   MOBILE DEVICES (Landscape) & SMALL TABLETS
+   ======================================== */
+
 /* Small Devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (max-width: 767.98px) {
+  /* Hide dice icon on small tablets */
+  .hero-title .fas.fa-dice-d20 {
+    display: none;
+  }
+  
   /* Game Board */
   .game-board {
     grid-template-areas: 
@@ -227,16 +328,108 @@
     grid-template-rows: auto auto auto auto;
   }
   
-  /* Cards */
+  /* Other Players - Make inline for small devices */
+  .other-players {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-sm);
+  }
+  
+  /* Player Slots - Compact for inline display */
+  .player-slot {
+    flex: 1;
+    min-width: 0;
+    max-width: calc(50% - var(--spacing-sm));
+    padding: var(--spacing-sm);
+  }
+  
+  .player-slot .player-info {
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .player-slot .player-avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
+  }
+  
+  .player-slot .player-name {
+    font-size: 0.8rem;
+  }
+  
+  .player-slot .card-count {
+    font-size: 0.7rem;
+  }
+  
+  .player-slot .player-cards {
+    gap: 2px;
+  }
+  
+  .player-slot .player-cards .card-back {
+    width: 16px;
+    height: 22px;
+    border-radius: 2px;
+  }
+  
+  .player-slot .player-cards .card-back::after {
+    font-size: 0.2rem;
+    letter-spacing: 0.05px;
+  }
+  
+  /* Game Actions - Keep inline for small devices */
+  .game-actions {
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--spacing-sm);
+  }
+  
+  .game-actions .btn {
+    flex: 1;
+    max-width: 140px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.8rem;
+  }
+  
+  /* Cards - Enhanced 3D Design */
   .uno-card {
     width: 55px;
     height: 77px;
     font-size: 0.8rem;
+    
+    /* Adjust 3D effects for small devices */
+    transform: rotateX(1.5deg) rotateY(-0.8deg) translateZ(0);
+  }
+  
+  .uno-card:hover {
+    transform: translateY(-12px) scale(1.06) rotateX(4deg) rotateY(-1.5deg) translateZ(8px);
+  }
+  
+  .uno-card .card-value {
+    font-size: 1.2rem;
+  }
+  
+  .uno-card .card-corner {
+    font-size: 0.45rem;
   }
   
   .card-back {
     width: 70px;
     height: 98px;
+    border-radius: 7px; /* Adjusted for small devices */
+    
+    /* No 3D effects for small devices */
+    transform: none;
+  }
+  
+  .card-back:hover {
+    transform: translateY(-7px) scale(1.04);
+  }
+  
+  .card-back::after {
+    font-size: 1.15rem; /* Increased for small devices to fit perfectly in red oval */
+    letter-spacing: 0.6px;
   }
   
   /* Player Hand */
@@ -250,8 +443,38 @@
   }
 }
 
+/* ========================================
+   TABLETS (Portrait & Landscape)
+   ======================================== */
+
 /* Medium Devices (tablets, 768px and up) */
 @media (min-width: 768px) and (max-width: 991.98px) {
+  /* Hide dice icon on tablets */
+  .hero-title .fas.fa-dice-d20 {
+    display: none;
+  }
+  
+  /* Game Header - Keep inline for tablets */
+  .game-header {
+    flex-direction: row;
+    gap: var(--spacing-sm);
+  }
+  
+  .game-info {
+    flex-direction: row;
+    gap: var(--spacing-md);
+    text-align: left;
+  }
+  
+  .room-id, .turn-info {
+    font-size: 0.8rem; /* Slightly larger for tablet */
+  }
+  
+  .game-controls .btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
   /* Game Board */
   .game-board {
     grid-template-areas: 
@@ -262,16 +485,117 @@
     grid-template-rows: auto 1fr auto;
   }
   
-  /* Cards */
+  /* Other Players - Make inline for tablets */
+  .other-players {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-sm);
+  }
+  
+  /* Player Slots - Compact for inline display with 4-card capacity */
+  .player-slot {
+    flex: 1;
+    min-width: 200px; /* Increased for 4 cards */
+    max-width: 250px; /* Increased for 4 cards */
+    padding: var(--spacing-sm);
+  }
+  
+  .player-slot .player-info {
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .player-slot .player-avatar {
+    width: 26px;
+    height: 26px;
+    font-size: 0.75rem;
+  }
+  
+  .player-slot .player-name {
+    font-size: 0.8rem;
+    max-width: 100px; /* Limit width for tablet */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .player-slot .card-count {
+    font-size: 0.7rem;
+  }
+  
+  .player-slot .player-cards {
+    gap: 2px;
+    max-height: calc((24px + 2px) * 2); /* 2 rows max */
+    justify-content: flex-start;
+    width: 100%;
+  }
+  
+  .player-slot .player-cards .card-back {
+    width: 24px;
+    height: 24px;
+    border-radius: 3px;
+    flex: 0 0 calc((100% - (3 * 2px)) / 4); /* 4 cards per container */
+    max-width: calc((100% - (3 * 2px)) / 4);
+  }
+  
+  .player-slot .player-cards .card-back::after {
+    font-size: 0.25rem;
+    letter-spacing: 0.05px;
+  }
+  
+  /* Game Actions - Keep inline for tablets */
+  .game-actions {
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--spacing-sm);
+  }
+  
+  .game-actions .btn {
+    flex: 1;
+    max-width: 160px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.85rem;
+  }
+  
+  /* Cards - Enhanced 3D Design */
   .uno-card {
     width: 60px;
     height: 84px;
     font-size: 0.875rem;
+    
+    /* Standard 3D effects for medium devices */
+    transform: rotateX(2deg) rotateY(-1deg) translateZ(0);
+  }
+  
+  .uno-card:hover {
+    transform: translateY(-15px) scale(1.08) rotateX(5deg) rotateY(-2deg) translateZ(10px);
+  }
+  
+  .uno-card .card-value {
+    font-size: 1.4rem;
+  }
+  
+  .uno-card .card-corner {
+    font-size: 0.5rem;
   }
   
   .card-back {
     width: 80px;
     height: 112px;
+    border-radius: 8px; /* Adjusted for medium devices */
+    
+    /* No 3D effects for medium devices */
+    transform: none;
+  }
+  
+  .card-back:hover {
+    transform: translateY(-8px) scale(1.05);
+  }
+  
+  .card-back::after {
+    font-size: 1.25rem; /* Increased for medium devices to fit perfectly in red oval */
+    letter-spacing: 0.7px;
   }
   
   /* Player Hand */
@@ -290,22 +614,72 @@
   }
 }
 
+/* ========================================
+   LAPTOPS & DESKTOPS (Full Width Layout)
+   ======================================== */
+
 /* Large Devices (desktops, 992px and up) */
 @media (min-width: 992px) and (max-width: 1199.98px) {
-  /* Game Board */
+  /* Game Board - 3 column grid */
   .game-board {
+    grid-template-areas: 
+      "player1 player2 player3"
+      "center center center"
+      "current current current";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
     gap: var(--spacing-lg);
   }
   
-  /* Cards */
+  /* Other Players - 3 column grid layout */
+  .other-players {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: var(--spacing-md) !important;
+  }
+  
+  .player-slot {
+    width: 100%;
+    max-width: none;
+  }
+  
+  /* Cards - Enhanced 3D Design */
   .uno-card {
     width: 65px;
     height: 91px;
+    
+    /* Enhanced 3D effects for large devices */
+    transform: rotateX(2.5deg) rotateY(-1.2deg) translateZ(0);
+  }
+  
+  .uno-card:hover {
+    transform: translateY(-18px) scale(1.1) rotateX(6deg) rotateY(-2.5deg) translateZ(12px);
+  }
+  
+  .uno-card .card-value {
+    font-size: 1.5rem;
+  }
+  
+  .uno-card .card-corner {
+    font-size: 0.55rem;
   }
   
   .card-back {
     width: 85px;
     height: 119px;
+    border-radius: 8px; /* Adjusted for large devices */
+    
+    /* No 3D effects for large devices */
+    transform: none;
+  }
+  
+  .card-back:hover {
+    transform: translateY(-8px) scale(1.05);
+  }
+  
+  .card-back::after {
+    font-size: 1.3rem; /* Increased for large devices to fit perfectly in red oval */
+    letter-spacing: 0.8px;
   }
   
   /* Player Hand */
@@ -316,20 +690,66 @@
 
 /* Extra Large Devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
-  /* Game Board */
+  /* Game Board - 3 column grid */
   .game-board {
+    grid-template-areas: 
+      "player1 player2 player3"
+      "center center center"
+      "current current current";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
     gap: var(--spacing-xl);
   }
   
-  /* Cards */
+  /* Other Players - 3 column grid layout */
+  .other-players {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: var(--spacing-lg) !important;
+  }
+  
+  .player-slot {
+    width: 100%;
+    max-width: none;
+  }
+  
+  /* Cards - Enhanced 3D Design */
   .uno-card {
     width: 70px;
     height: 98px;
+    
+    /* Maximum 3D effects for extra large devices */
+    transform: rotateX(3deg) rotateY(-1.5deg) translateZ(0);
+  }
+  
+  .uno-card:hover {
+    transform: translateY(-20px) scale(1.12) rotateX(8deg) rotateY(-3deg) translateZ(15px);
+  }
+  
+  .uno-card .card-value {
+    font-size: 1.6rem;
+  }
+  
+  .uno-card .card-corner {
+    font-size: 0.6rem;
   }
   
   .card-back {
     width: 90px;
     height: 126px;
+    border-radius: 8px; /* Adjusted for extra large devices */
+    
+    /* No 3D effects for extra large devices */
+    transform: none;
+  }
+  
+  .card-back:hover {
+    transform: translateY(-8px) scale(1.05);
+  }
+  
+  .card-back::after {
+    font-size: 1.4rem; /* Increased for extra large devices to fit perfectly in red oval */
+    letter-spacing: 1.0px;
   }
   
   /* Player Hand */
@@ -343,11 +763,680 @@
   }
 }
 
-/* Landscape Orientation */
+/* 14-inch Laptop Screens (1366x768, 1440x900) */
+@media (min-width: 1366px) and (max-width: 1440px) and (max-height: 900px) {
+  /* Game Page Specific Optimizations */
+  #gamePage .game-container {
+    padding: var(--spacing-xs);
+  }
+  
+  #gamePage .game-header {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  #gamePage .game-board {
+    gap: var(--spacing-xs);
+  }
+  
+  /* 3 column grid layout for 14-inch laptops */
+  #gamePage .game-board {
+    grid-template-areas: 
+      "player1 player2 player3"
+      "center center center"
+      "current current current";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+  
+  #gamePage .other-players {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: var(--spacing-xs) !important;
+  }
+  
+  #gamePage .player-slot {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  
+  #gamePage .player-slot .player-info {
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  #gamePage .player-slot .player-avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
+  }
+  
+  #gamePage .player-slot .player-name {
+    font-size: 0.8rem;
+  }
+  
+  #gamePage .player-slot .card-count {
+    font-size: 0.7rem;
+  }
+  
+  #gamePage .center-area {
+    gap: var(--spacing-xs);
+  }
+  
+  #gamePage .deck-area {
+    gap: var(--spacing-xs);
+  }
+  
+  #gamePage .current-color {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    gap: var(--spacing-xs);
+  }
+  
+  #gamePage .current-player-area {
+    gap: var(--spacing-xs);
+  }
+  
+  #gamePage .player-hand {
+    min-height: 60px;
+    gap: var(--spacing-xs);
+  }
+  
+  #gamePage .game-actions {
+    gap: var(--spacing-xs);
+  }
+  
+  #gamePage .game-actions .btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8rem;
+  }
+  
+  /* Cards optimization for 14-inch screens */
+  #gamePage .uno-card {
+    width: 60px;
+    height: 84px;
+    font-size: 0.8rem;
+  }
+  
+  #gamePage .uno-card .card-value {
+    font-size: 1.2rem;
+  }
+  
+  #gamePage .uno-card .card-corner {
+    font-size: 0.45rem;
+  }
+  
+  #gamePage .card-back {
+    width: 75px;
+    height: 105px;
+    border-radius: 7px; /* Adjusted for 14-inch screens */
+  }
+  
+  #gamePage .card-back::after {
+    font-size: 1.2rem; /* Increased for 14-inch screens to fit perfectly in red oval */
+    letter-spacing: 0.6px;
+  }
+  
+  #gamePage .player-cards .card-back {
+    width: 20px;
+    height: 28px;
+  }
+  
+  /* Maintain hover effects for 14-inch screens */
+  #gamePage .uno-card:hover {
+    transform: translateY(-12px) scale(1.06) rotateX(4deg) rotateY(-1.5deg) translateZ(8px);
+  }
+  
+  #gamePage .card-back:hover {
+    transform: translateY(-4px) scale(1.02) rotateX(4deg) rotateY(-1.5deg) translateZ(4px);
+  }
+  
+  /* Lobby Page Specific Optimizations */
+  #lobbyPage .container {
+    padding: var(--spacing-sm);
+  }
+  
+  #lobbyPage .col-lg-8,
+  #lobbyPage .col-lg-4 {
+    padding: 0 var(--spacing-xs);
+  }
+  
+  #lobbyPage .glass-card .card-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  #lobbyPage .glass-card .card-body {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  /* Players list - compact spacing */
+  #lobbyPage .players-list {
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  #lobbyPage .player-item {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  
+  #lobbyPage .player-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+  
+  /* Lobby actions - compact */
+  #lobbyPage .lobby-actions {
+    margin-top: var(--spacing-sm);
+    gap: var(--spacing-xs);
+  }
+  
+  #lobbyPage .lobby-actions .btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8rem;
+  }
+  
+  /* Room details - compact */
+  #lobbyPage .room-details {
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  #lobbyPage .detail-item {
+    padding: var(--spacing-xs) 0;
+    font-size: 0.9rem;
+  }
+  
+  /* QR Code section - compact */
+  #lobbyPage .qr-code-section {
+    margin-top: var(--spacing-sm);
+  }
+  
+  #lobbyPage .qr-code {
+    width: 60px;
+    height: 60px;
+  }
+  
+  #lobbyPage .qr-text {
+    font-size: 0.7rem;
+    margin-top: var(--spacing-xs);
+  }
+}
+
+/* 16-inch Laptop Screens (1920x1080, 2560x1440) */
+@media (min-width: 1920px) and (max-height: 1080px) {
+  /* Game Page Specific Optimizations for 16-inch screens */
+  #gamePage .game-container {
+    padding: var(--spacing-md);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  #gamePage .game-header {
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  #gamePage .game-board {
+    gap: var(--spacing-md);
+  }
+  
+  /* 3 column grid layout for 16-inch laptops */
+  #gamePage .game-board {
+    grid-template-areas: 
+      "player1 player2 player3"
+      "center center center"
+      "current current current";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+  
+  #gamePage .other-players {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: var(--spacing-sm) !important;
+  }
+  
+  #gamePage .player-slot {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  #gamePage .player-slot .player-info {
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  #gamePage .player-slot .player-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+  
+  #gamePage .player-slot .player-name {
+    font-size: 0.9rem;
+  }
+  
+  #gamePage .player-slot .card-count {
+    font-size: 0.8rem;
+  }
+  
+  #gamePage .center-area {
+    gap: var(--spacing-md);
+  }
+  
+  #gamePage .deck-area {
+    gap: var(--spacing-md);
+  }
+  
+  #gamePage .current-color {
+    padding: var(--spacing-sm) var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+  
+  #gamePage .current-player-area {
+    gap: var(--spacing-md);
+  }
+  
+  #gamePage .player-hand {
+    min-height: 100px;
+    gap: var(--spacing-sm);
+  }
+  
+  #gamePage .game-actions {
+    gap: var(--spacing-sm);
+  }
+  
+  #gamePage .game-actions .btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
+  }
+  
+  /* Cards optimization for 16-inch screens - slightly larger */
+  #gamePage .uno-card {
+    width: 75px;
+    height: 105px;
+    font-size: 0.9rem;
+  }
+  
+  #gamePage .uno-card .card-value {
+    font-size: 1.4rem;
+  }
+  
+  #gamePage .uno-card .card-corner {
+    font-size: 0.5rem;
+  }
+  
+  #gamePage .card-back {
+    width: 95px;
+    height: 133px;
+    border-radius: 8px; /* Adjusted for 16-inch screens */
+  }
+  
+  #gamePage .card-back::after {
+    font-size: 1.35rem; /* Increased for 16-inch screens to fit perfectly in red oval */
+    letter-spacing: 0.8px;
+  }
+  
+  #gamePage .player-cards .card-back {
+    width: 22px;
+    height: 31px;
+  }
+  
+  /* Maintain hover effects for 16-inch screens */
+  #gamePage .uno-card:hover {
+    transform: translateY(-18px) scale(1.1) rotateX(6deg) rotateY(-2.5deg) translateZ(12px);
+  }
+  
+  #gamePage .card-back:hover {
+    transform: translateY(-6px) scale(1.03) rotateX(6deg) rotateY(-2.5deg) translateZ(6px);
+  }
+  
+  /* Lobby Page Specific Optimizations for 16-inch screens */
+  #lobbyPage .container {
+    padding: var(--spacing-md);
+    max-width: 1400px;
+  }
+  
+  #lobbyPage .col-lg-8,
+  #lobbyPage .col-lg-4 {
+    padding: 0 var(--spacing-sm);
+  }
+  
+  #lobbyPage .glass-card .card-header {
+    padding: var(--spacing-md);
+  }
+  
+  #lobbyPage .glass-card .card-body {
+    padding: var(--spacing-md);
+  }
+  
+  /* Players list - balanced spacing */
+  #lobbyPage .players-list {
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  #lobbyPage .player-item {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  #lobbyPage .player-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+  
+  /* Lobby actions - balanced */
+  #lobbyPage .lobby-actions {
+    margin-top: var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+  
+  #lobbyPage .lobby-actions .btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
+  }
+  
+  /* Room details - balanced spacing */
+  #lobbyPage .room-details {
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  #lobbyPage .detail-item {
+    padding: var(--spacing-sm) 0;
+    font-size: 0.95rem;
+  }
+  
+  /* QR Code section - balanced */
+  #lobbyPage .qr-code-section {
+    margin-top: var(--spacing-md);
+  }
+  
+  #lobbyPage .qr-code {
+    width: 80px;
+    height: 80px;
+  }
+  
+  #lobbyPage .qr-text {
+    font-size: 0.8rem;
+    margin-top: var(--spacing-sm);
+  }
+}
+
+/* High DPI 16-inch Screens (2560x1440, 2880x1800) */
+@media (min-width: 2560px) and (max-height: 1440px) {
+  /* Game Page Specific Optimizations for high DPI 16-inch screens */
+  #gamePage {
+    height: calc(100vh - 80px); /* Fixed height to prevent overflow */
+    overflow: hidden;
+    padding: 0;
+  }
+  
+  #gamePage .game-container {
+    height: 100%;
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  #gamePage .game-header {
+    flex-shrink: 0;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  #gamePage .game-board {
+    flex: 1;
+    min-height: 0;
+    gap: var(--spacing-lg);
+    grid-template-rows: auto 1fr auto;
+  }
+  
+  /* 3 column grid layout for high DPI 16-inch laptops */
+  #gamePage .game-board {
+    grid-template-areas: 
+      "player1 player2 player3"
+      "center center center"
+      "current current current";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+  
+  #gamePage .other-players {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: var(--spacing-md) !important;
+  }
+  
+  #gamePage .player-slot {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  
+  #gamePage .player-slot .player-info {
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  #gamePage .player-slot .player-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+  
+  #gamePage .player-slot .player-name {
+    font-size: 1rem;
+  }
+  
+  #gamePage .player-slot .card-count {
+    font-size: 0.9rem;
+  }
+  
+  #gamePage .center-area {
+    gap: var(--spacing-lg);
+  }
+  
+  #gamePage .deck-area {
+    gap: var(--spacing-lg);
+  }
+  
+  #gamePage .current-color {
+    padding: var(--spacing-md) var(--spacing-lg);
+    gap: var(--spacing-md);
+  }
+  
+  #gamePage .current-player-area {
+    gap: var(--spacing-lg);
+  }
+  
+  #gamePage .player-hand {
+    min-height: 120px;
+    gap: var(--spacing-md);
+  }
+  
+  #gamePage .game-actions {
+    gap: var(--spacing-md);
+  }
+  
+  #gamePage .game-actions .btn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 1rem;
+  }
+  
+  /* Lobby Page Specific Optimizations for high DPI 16-inch screens */
+  #lobbyPage {
+    height: calc(100vh - 80px); /* Fixed height to prevent overflow */
+    overflow: hidden;
+    padding: 0;
+  }
+  
+  #lobbyPage .container {
+    height: 100%;
+    padding: var(--spacing-lg);
+    max-width: 1400px;
+  }
+  
+  #lobbyPage .row {
+    height: 100%;
+    margin: 0;
+  }
+  
+  #lobbyPage .col-lg-8,
+  #lobbyPage .col-lg-4 {
+    height: 100%;
+    padding: 0 var(--spacing-md);
+  }
+  
+  #lobbyPage .glass-card {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #lobbyPage .glass-card .card-header {
+    padding: var(--spacing-lg);
+    flex-shrink: 0;
+  }
+  
+  #lobbyPage .glass-card .card-body {
+    flex: 1;
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  /* Players list - make it scrollable if needed */
+  #lobbyPage .players-list {
+    flex: 1;
+    overflow-y: auto;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  #lobbyPage .player-item {
+    padding: var(--spacing-md) var(--spacing-lg);
+    flex-shrink: 0;
+  }
+  
+  #lobbyPage .player-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  
+  /* Lobby actions - fixed at bottom */
+  #lobbyPage .lobby-actions {
+    flex-shrink: 0;
+    margin-top: var(--spacing-lg);
+    gap: var(--spacing-md);
+  }
+  
+  #lobbyPage .lobby-actions .btn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 1rem;
+  }
+  
+  /* Room details - generous spacing */
+  #lobbyPage .room-details {
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  #lobbyPage .detail-item {
+    padding: var(--spacing-md) 0;
+    font-size: 1rem;
+  }
+  
+  /* QR Code section - generous */
+  #lobbyPage .qr-code-section {
+    margin-top: var(--spacing-lg);
+  }
+  
+  #lobbyPage .qr-code {
+    width: 100px;
+    height: 100px;
+  }
+  
+  #lobbyPage .qr-text {
+    font-size: 0.9rem;
+    margin-top: var(--spacing-md);
+  }
+}
+
+/* ========================================
+   LANDSCAPE ORIENTATION SPECIFIC
+   ======================================== */
+
+/* Landscape Mobile Devices */
 @media (orientation: landscape) and (max-height: 600px) {
   /* Reduce vertical spacing */
   .main-content {
     padding: var(--spacing-sm) 0;
+  }
+  
+  /* Make opponent cards inline for landscape mobile/tablets */
+  .other-players {
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    gap: var(--spacing-xs);
+  }
+  
+  .player-slot {
+    flex: 1;
+    min-width: 0;
+    max-width: calc(33.333% - var(--spacing-xs));
+  }
+  
+  .player-slot .player-name {
+    max-width: 60px; /* Smaller for landscape */
+  }
+  
+  /* Ensure maximum 2 rows for opponent cards */
+  .player-cards {
+    max-height: 60px; /* Limit height to force 2 rows max */
+    overflow: hidden;
+  }
+  
+  .player-cards .card-back {
+    width: 14px;
+    height: 18px;
+    border-radius: 2px;
+  }
+}
+
+/* Landscape Tablets */
+@media (orientation: landscape) and (min-width: 768px) and (max-width: 1024px) {
+  /* Make opponent cards inline for landscape tablets */
+  .other-players {
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    gap: var(--spacing-sm);
+  }
+  
+  .player-slot {
+    flex: 1;
+    min-width: 0;
+    max-width: calc(33.333% - var(--spacing-sm));
+  }
+  
+  .player-slot .player-name {
+    max-width: 80px; /* Appropriate for landscape tablets */
+  }
+  
+  /* Ensure maximum 2 rows for opponent cards */
+  .player-cards {
+    max-height: 70px; /* Limit height to force 2 rows max */
+    overflow: hidden;
+  }
+  
+  .player-cards .card-back {
+    width: 18px;
+    height: 24px;
+    border-radius: 2px;
   }
   
   .hero-section {
@@ -385,6 +1474,7 @@
   .card-back {
     width: 60px;
     height: 84px;
+    border-radius: 6px; /* Adjusted for landscape */
   }
 }
 
@@ -422,8 +1512,12 @@
   
   /* Remove hover effects on touch devices */
   .uno-card:hover {
-    transform: none;
-    box-shadow: var(--glass-shadow);
+    transform: rotateX(2deg) rotateY(-1deg) translateZ(0);
+    box-shadow: 
+      0 4px 8px rgba(0, 0, 0, 0.3),
+      0 8px 16px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
   }
   
   .glass-button:hover {
@@ -440,7 +1534,7 @@
   
   /* Add active states for touch */
   .uno-card:active {
-    transform: scale(0.95);
+    transform: scale(0.95) rotateX(1deg) rotateY(-0.5deg) translateZ(0);
   }
   
   .glass-button:active {
@@ -552,6 +1646,123 @@
   
   .glass-button {
     background: rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* ========================================
+   LAPTOP SCREEN OPTIMIZATIONS
+   ======================================== */
+
+/* All laptop screens (992px and up) - Full Width Layout */
+@media (min-width: 992px) {
+  /* Game Board - 3 column grid for laptop screens */
+  .game-board {
+    grid-template-areas: 
+      "player1 player2 player3"
+      "center center center"
+      "current current current";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--spacing-md);
+  }
+  
+  /* Other Players - 3 column grid layout for full width */
+  .other-players {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: var(--spacing-md) !important;
+    grid-area: player1 / player2 / player3;
+  }
+  
+  /* Player Slots - Equal width in grid with 4-card capacity */
+  .player-slot {
+    width: 100%;
+    min-width: 250px; /* Increased for 4 cards */
+    max-width: 300px; /* Increased for 4 cards */
+  }
+  
+  /* Ensure maximum 2 rows for opponent cards on laptops */
+  .player-cards {
+    max-height: calc((30px + var(--spacing-xs)) * 2); /* 2 rows max */
+    overflow: hidden;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
+  }
+  
+  .player-cards .card-back {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    flex: 0 0 calc((100% - (3 * var(--spacing-xs))) / 4); /* 4 cards per container */
+    max-width: calc((100% - (3 * var(--spacing-xs))) / 4);
+  }
+  
+  /* Individual player slot positioning */
+  #playerSlot1 {
+    grid-column: 1;
+  }
+  
+  #playerSlot2 {
+    grid-column: 2;
+  }
+  
+  #playerSlot3 {
+    grid-column: 3;
+  }
+}
+
+/* Additional Laptop Optimizations */
+/* Medium Laptop Screens (1440x900, 1600x900) */
+@media (min-width: 1440px) and (max-width: 1600px) and (max-height: 900px) {
+  /* Game Page optimizations for medium laptops */
+  #gamePage .uno-card {
+    width: 65px;
+    height: 91px;
+    font-size: 0.85rem;
+  }
+  
+  #gamePage .uno-card .card-value {
+    font-size: 1.3rem;
+  }
+  
+  #gamePage .card-back {
+    width: 85px;
+    height: 119px;
+    border-radius: 8px; /* Adjusted for medium laptops */
+  }
+  
+  #gamePage .player-cards .card-back {
+    width: 21px;
+    height: 29px;
+  }
+  
+  /* 3 column grid layout for medium laptops */
+  #gamePage .game-board {
+    grid-template-areas: 
+      "player1 player2 player3"
+      "center center center"
+      "current current current";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+  
+  #gamePage .other-players {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: var(--spacing-sm) !important;
+  }
+  
+  /* Lobby optimizations */
+  #lobbyPage .player-avatar {
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
+  }
+  
+  #lobbyPage .qr-code {
+    width: 70px;
+    height: 70px;
   }
 }
 

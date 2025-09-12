@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UNO Multiplayer - Play with Friends</title>
+   
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -32,26 +33,26 @@
         </div>
     </div>
 
-    <!-- Main App Container -->
-    <div id="app" class="app-container">
-        <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-dark glass-navbar">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    <i class="fas fa-dice-d20 me-2"></i>
-                    UNO Multiplayer
-                </a>
-                <div class="navbar-nav ms-auto">
-                    <div class="nav-item">
-                        <span id="connectionStatus" class="badge bg-success">
-                            <i class="fas fa-wifi me-1"></i>
-                            Connected
-                        </span>
-                    </div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark glass-navbar">
+        <div class="navbar-container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-dice-d20 me-2"></i>
+                UNO Multiplayer
+            </a>
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item">
+                    <span id="connectionStatus" class="badge bg-success">
+                        <i class="fas fa-wifi me-1"></i>
+                        Connected
+                    </span>
                 </div>
             </div>
-        </nav>
+        </div>
+    </nav>
 
+    <!-- Main App Container -->
+    <div id="app" class="app-container">
         <!-- Main Content -->
         <main class="main-content">
             <!-- Landing Page -->
@@ -61,6 +62,7 @@
                         <div class="col-lg-8">
                             <div class="hero-section text-center">
                                 <h1 class="hero-title">
+                                    <i class="fas fa-dice-d20 me-3"></i>
                                     <span class="text-gradient">UNO</span> Multiplayer
                                 </h1>
                                 <p class="hero-subtitle">
@@ -232,6 +234,17 @@
                                         </div>
                                     </div>
                                     
+                                    <div class="network-info-section">
+                                        <h5>
+                                            <i class="fas fa-wifi me-2"></i>
+                                            Network Requirements
+                                        </h5>
+                                        <div class="alert alert-info">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            <strong>Important:</strong> Make sure that host and all the other players are connected to a common WiFi network.
+                                        </div>
+                                    </div>
+                                    
                                     <div class="qr-code-section">
                                         <h5>Share Room</h5>
                                         <div id="qrCode" class="qr-code">
@@ -317,7 +330,6 @@
                             <div class="deck-area">
                                 <div class="draw-pile" id="drawPile">
                                     <div class="card-back">
-                                        <i class="fas fa-layer-group"></i>
                                     </div>
                                 </div>
                                 
@@ -396,28 +408,32 @@
     <!-- Color Picker Modal -->
     <div class="modal fade" id="colorPickerModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content glass-modal">
+            <div class="modal-content glass-modal wild-card-modal">
                 <div class="modal-header">
-                    <h5 class="modal-title">Choose Color</h5>
+                    <h5 class="modal-title">
+                        <i class="fas fa-palette me-2"></i>
+                        Choose Color
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <p>Choose a color for your wild card:</p>
-                    <div class="color-options">
-                        <button class="color-btn red" data-color="red">
-                            <i class="fas fa-circle"></i>
-                            Red
+                    <p class="mb-4">Choose a color for your wild card:</p>
+                    <div class="color-options wild-color-options">
+                        <button class="color-btn red wild-color-btn" data-color="red">
+                            <div class="color-circle red"></div>
+                            <span class="color-label">Red</span>
                         </button>
-                        <button class="color-btn green" data-color="green">
-                            <i class="fas fa-circle"></i>
-                            Green
+                        <button class="color-btn green wild-color-btn" data-color="green">
+                            <div class="color-circle green"></div>
+                            <span class="color-label">Green</span>
                         </button>
-                        <button class="color-btn blue" data-color="blue">
-                            <i class="fas fa-circle"></i>
-                            Blue
+                        <button class="color-btn blue wild-color-btn" data-color="blue">
+                            <div class="color-circle blue"></div>
+                            <span class="color-label">Blue</span>
                         </button>
-                        <button class="color-btn yellow" data-color="yellow">
-                            <i class="fas fa-circle"></i>
-                            Yellow
+                        <button class="color-btn yellow wild-color-btn" data-color="yellow">
+                            <div class="color-circle yellow"></div>
+                            <span class="color-label">Yellow</span>
                         </button>
                     </div>
                 </div>

@@ -543,7 +543,28 @@ class GameUI {
     }
     
     if (hostNameDisplay) {
-      const host = window.gameState.players.find(p => p.isHost);
+      // First try to find host in players array
+      let host = window.gameState.players.find(p => p.isHost);
+      
+      // If not found in players array, check if current player is host
+      if (!host && window.gameState.isHost) {
+        host = { name: window.gameState.playerName };
+      }
+      
+      // If still not found, try to get from room data if available
+      if (!host && window.gameState.roomData && window.gameState.roomData.host) {
+        host = window.gameState.roomData.host;
+      }
+      
+      // Debug logging
+      console.log('Host search debug:', {
+        players: window.gameState.players,
+        isHost: window.gameState.isHost,
+        playerName: window.gameState.playerName,
+        roomData: window.gameState.roomData,
+        foundHost: host
+      });
+      
       hostNameDisplay.textContent = host ? host.name : '-';
     }
   }
@@ -564,6 +585,9 @@ class GameUI {
     
     // Update start game button state
     this.updateStartGameButton();
+    
+    // Also update room info when players list changes
+    this.updateRoomInfo();
   }
 
   /**
@@ -582,6 +606,7 @@ class GameUI {
     if (player.id === window.gameState.playerId) {
       playerItem.classList.add('is-current');
     }
+    
     
     playerItem.innerHTML = `
       <div class="player-info">

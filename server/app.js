@@ -134,20 +134,24 @@ class UnoServer {
     this.server.listen(this.port, '0.0.0.0', () => {
       logger.info(`🚀 UNO Multiplayer Server running on port ${this.port}`);
       
-      // Display local IP addresses for LAN access
-      const networkInterfaces = os.networkInterfaces();
+      // Display server info
       console.log('\n📡 Server accessible via:');
       console.log(`   Local: http://localhost:${this.port}`);
       
-      Object.keys(networkInterfaces).forEach(interfaceName => {
-        networkInterfaces[interfaceName].forEach(netInterface => {
-          if (netInterface.family === 'IPv4' && !netInterface.internal) {
-            console.log(`   LAN:   http://${netInterface.address}:${this.port}`);
-          }
+      // Only show LAN info in development
+      if (process.env.NODE_ENV !== 'production') {
+        const networkInterfaces = os.networkInterfaces();
+        Object.keys(networkInterfaces).forEach(interfaceName => {
+          networkInterfaces[interfaceName].forEach(netInterface => {
+            if (netInterface.family === 'IPv4' && !netInterface.internal) {
+              console.log(`   LAN:   http://${netInterface.address}:${this.port}`);
+            }
+          });
         });
-      });
-      
-      console.log('\n🎮 Players can join by visiting the LAN URLs above\n');
+        console.log('\n🎮 Players can join by visiting the LAN URLs above\n');
+      } else {
+        console.log('\n🌐 Production server ready!\n');
+      }
     });
   }
 }

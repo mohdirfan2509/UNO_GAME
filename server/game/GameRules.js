@@ -364,10 +364,41 @@ class GameRules {
       currentPlayerIndex,
       updatedState.direction,
       updatedState.players.length,
-      action.skipNextPlayer
+      false // Don't skip yet, we need to handle +2/+4 effects first
     );
 
-    updatedState.currentPlayerIndex = nextPlayerIndex;
+    // Handle +2 and +4 card effects
+    if (action.cardsToDraw > 0) {
+      const nextPlayer = updatedState.players[nextPlayerIndex];
+      
+      // Check if deck needs reshuffling
+      if (updatedState.deck.needsReshuffle()) {
+        updatedState.deck.reshuffleFromDiscard();
+      }
+      
+      // Draw cards for the next player
+      const drawnCards = updatedState.deck.drawCards(action.cardsToDraw);
+      nextPlayer.addCards(drawnCards);
+      
+      // Now skip the next player's turn
+      const finalNextPlayerIndex = this.calculateNextPlayer(
+        currentPlayerIndex,
+        updatedState.direction,
+        updatedState.players.length,
+        true // Skip the next player
+      );
+      updatedState.currentPlayerIndex = finalNextPlayerIndex;
+    } else {
+      // Normal turn progression (with potential skip from other effects)
+      const finalNextPlayerIndex = this.calculateNextPlayer(
+        currentPlayerIndex,
+        updatedState.direction,
+        updatedState.players.length,
+        action.skipNextPlayer
+      );
+      updatedState.currentPlayerIndex = finalNextPlayerIndex;
+    }
+
     updatedState.turnNumber++;
 
     return updatedState;

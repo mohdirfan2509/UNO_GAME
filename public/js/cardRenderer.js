@@ -85,9 +85,7 @@ class CardRenderer {
    */
   createFaceDownContent() {
     return `
-      <div class="card-back">
-        <i class="fas fa-layer-group"></i>
-      </div>
+      <!-- UNO logo is created with CSS ::before and ::after pseudo-elements -->
     `;
   }
 
@@ -99,16 +97,19 @@ class CardRenderer {
    */
   createFaceUpContent(card, showValue = true) {
     if (!showValue) {
-      return '<div class="card-back"><i class="fas fa-layer-group"></i></div>';
+      return '';
     }
 
     const valueDisplay = this.getCardValueDisplay(card);
     const symbolDisplay = this.getCardSymbolDisplay(card);
+    const cornerValue = this.getCornerValue(card);
 
     return `
       <div class="card-content">
+        <div class="card-corner top-left">${cornerValue}</div>
         <div class="card-value">${valueDisplay}</div>
         <div class="card-symbol">${symbolDisplay}</div>
+        <div class="card-corner bottom-right">${cornerValue}</div>
       </div>
     `;
   }
@@ -120,12 +121,31 @@ class CardRenderer {
    */
   getCardValueDisplay(card) {
     if (card.isWild) {
-      return card.value === 'wild' ? 'W' : 'W4';
+      return card.value === 'wild' ? 'WILD' : 'WILD';
     }
     
     const valueMap = {
-      'skip': '⏭',
-      'reverse': '↩',
+      'skip': '',
+      'reverse': '',
+      'draw2': '+2'
+    };
+    
+    return valueMap[card.value] || card.value;
+  }
+
+  /**
+   * Get corner value for card
+   * @param {Object} card - Card object
+   * @returns {string} Corner value
+   */
+  getCornerValue(card) {
+    if (card.isWild) {
+      return card.value === 'wild' ? 'W' : 'W';
+    }
+    
+    const valueMap = {
+      'skip': '',
+      'reverse': '',
       'draw2': '+2'
     };
     
@@ -139,13 +159,13 @@ class CardRenderer {
    */
   getCardSymbolDisplay(card) {
     if (card.isWild) {
-      return '★';
+      return '';
     }
     
     const symbolMap = {
       'skip': '⏭',
       'reverse': '↩',
-      'draw2': '+2'
+      'draw2': '' // Remove redundant +2 symbol since it's already in the main value
     };
     
     return symbolMap[card.value] || '';
@@ -486,7 +506,7 @@ class CardRenderer {
       cardElement.style.height = '84px';
     }
     
-    cardElement.innerHTML = '<i class="fas fa-layer-group"></i>';
+    cardElement.innerHTML = '';
     
     if (clickable) {
       cardElement.style.cursor = 'pointer';

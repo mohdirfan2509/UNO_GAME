@@ -1,0 +1,19 @@
+{
+  "name": "uno-multiplayer",
+  "version": "1.0.0",
+  "description": "UNO Multiplayer Web Application",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "build": "echo 'No build step required'",
+    "postinstall": "cd server && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": ["uno", "multiplayer", "websocket", "game"],
+  "author": "UNO Multiplayer Team",
+  "license": "MIT"
+}

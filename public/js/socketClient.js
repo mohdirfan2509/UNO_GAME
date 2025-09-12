@@ -88,6 +88,10 @@ class SocketClient {
       this.emitLocal('turn-changed', data);
     });
 
+    this.socket.on('player-ready', (data) => {
+      this.emitLocal('player-ready', data);
+    });
+
     this.socket.on('uno-called', (data) => {
       this.emitLocal('uno-called', data);
     });
